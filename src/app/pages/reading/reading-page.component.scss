@@ -1,0 +1,38 @@
+.reading-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 23px;
+}
+
+.reading-card {
+  align-items: flex-start;
+  background: white;
+  border: 1px solid #eeede7;
+  border-radius: 9px;
+  display: flex;
+  gap: 11px;
+  padding: 14px 15px;
+}
+
+.reading-mark {
+  color: #a5b378;
+  flex: 0 0 auto;
+  font-size: 14px;
+  padding-top: 1px;
+}
+
+.reading-category {
+  color: #95a17e;
+  font-size: 7px;
+  font-weight: 750;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.reading-card p {
+  color: #646d61;
+  font-size: 10px;
+  line-height: 1.7;
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+}

@@ -1,0 +1,338 @@
+.week-section {
+  margin-top: 32px;
+}
+
+.section-heading,
+.day-heading {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-kicker {
+  color: #a0a294;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: 1.3px;
+  margin: 0;
+}
+
+h2,
+.day-heading h3 {
+  color: #364338;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 23px;
+  font-weight: 400;
+  margin: 6px 0 0;
+}
+
+.section-description {
+  color: #989b91;
+  font-size: 10px;
+  margin: 6px 0 0;
+}
+
+.summary-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 19px;
+}
+
+.summary-card {
+  align-items: center;
+  background: white;
+  border: 1px solid #eeede7;
+  border-radius: 9px;
+  display: grid;
+  grid-template-columns: 35px auto;
+  padding: 12px;
+}
+
+.summary-icon {
+  align-items: center;
+  background: #f0f1e7;
+  border-radius: 8px;
+  color: #818b68;
+  display: inline-flex;
+  grid-row: span 2;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
+}
+
+.summary-icon.followed {
+  background: #eaf2e9;
+  color: #64865e;
+}
+
+.summary-icon.pending {
+  background: #f8f0e2;
+  color: #bd9855;
+}
+
+.summary-card strong {
+  color: #3d493e;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.summary-card small {
+  color: #95988d;
+  font-size: 9px;
+  margin-top: 4px;
+}
+
+.day-tabs {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  margin-top: 16px;
+}
+
+.day-tab {
+  align-items: flex-start;
+  background: white;
+  border: 1px solid #edede6;
+  border-radius: 8px;
+  color: #83887d;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 58px;
+  padding: 9px;
+  text-align: left;
+}
+
+.day-tab.selected {
+  background: #f1f4ec;
+  border-color: #809575;
+  box-shadow: inset 0 0 0 1px #809575;
+  color: #425b43;
+}
+
+.day-tab span {
+  font-size: 8px;
+}
+
+.day-tab strong {
+  color: #3b473b;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+}
+
+.day-plan {
+  background: white;
+  border: 1px solid #eeede7;
+  border-radius: 11px;
+  margin-top: 16px;
+  padding: 19px;
+}
+
+.day-heading h3 {
+}
+
+.energy-badge {
+  background: #f7f5eb;
+  border-radius: 20px;
+  color: #8d845d;
+  font-size: 9px;
+  padding: 7px 10px;
+}
+
+.meal-list {
+  display: grid;
+  margin-top: 14px;
+}
+
+.meal-row {
+  align-items: flex-start;
+  border-bottom: 1px solid #f0efe9;
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+}
+
+.meal-icon {
+  align-items: center;
+  background: #f6f1e3;
+  border-radius: 8px;
+  color: #b38d4e;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.meal-row:nth-child(2) .meal-icon {
+  background: #edf2e8;
+  color: #71845f;
+}
+
+.meal-row:nth-child(3) .meal-icon {
+  background: #eff0ed;
+  color: #687267;
+}
+
+.meal-detail {
+  flex: 1;
+  min-width: 0;
+}
+
+.meal-label {
+  color: #51594f;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.meal-label small {
+  color: #a2a399;
+  font-size: 8px;
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+.meal-detail p {
+  color: #70766c;
+  font-size: 10px;
+  line-height: 1.65;
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+}
+
+.meal-status {
+  align-items: center;
+  background: #f5f3ec;
+  border-radius: 20px;
+  color: #97885e;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  margin-left: 6px;
+  padding: 7px 9px;
+}
+
+.meal-status.status-followed {
+  background: #e8f1e8;
+  color: #4f7956;
+}
+
+.meal-status.status-missed {
+  background: #f3ece7;
+  color: #a0735e;
+}
+
+.meal-status .status-dot {
+  background: currentColor;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+}
+
+.meal-status select {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: 9px;
+  max-width: 112px;
+  outline: 0;
+}
+
+.snack-note {
+  align-items: flex-start;
+  background: #f8f7f0;
+  border-radius: 8px;
+  color: #8d895f;
+  display: flex;
+  font-size: 11px;
+  gap: 9px;
+  margin-top: 15px;
+  padding: 12px;
+}
+
+.snack-note p {
+  color: #777d70;
+  font-size: 10px;
+  line-height: 1.6;
+  margin: 5px 0 0;
+}
+
+.notes-field {
+  color: #656d60;
+  display: grid;
+  font-size: 10px;
+  font-weight: 650;
+  gap: 7px;
+  margin-top: 17px;
+}
+
+.notes-field textarea {
+  background: #fcfcf9;
+  border: 1px solid #eaeae2;
+  border-radius: 7px;
+  color: #596153;
+  font: inherit;
+  font-size: 10px;
+  line-height: 1.5;
+  padding: 9px 10px;
+  resize: vertical;
+}
+
+@media (max-width: 560px) {
+  .week-section {
+    margin-top: 24px;
+  }
+
+  .summary-row {
+    gap: 7px;
+  }
+
+  .summary-card {
+    grid-template-columns: 27px auto;
+    padding: 8px 6px;
+  }
+
+  .summary-icon {
+    height: 23px;
+    width: 23px;
+  }
+
+  .summary-card strong {
+    font-size: 12px;
+  }
+
+  .summary-card small {
+    font-size: 7px;
+  }
+
+  .day-tabs {
+    gap: 5px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .day-tab {
+    min-height: 50px;
+    padding: 6px;
+  }
+
+  .day-plan {
+    padding: 14px;
+  }
+
+  .meal-row {
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .meal-detail {
+    width: calc(100% - 42px);
+  }
+
+  .meal-status {
+    margin-left: 41px;
+  }
+}

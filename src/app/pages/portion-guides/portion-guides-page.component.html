@@ -1,0 +1,24 @@
+<div class="page-content">
+  <header class="page-heading">
+    <p class="eyebrow">LES BONS REPÈRES, SANS PRESSION</p>
+    <h1>Repères portions</h1>
+    <p>Les indications importées de votre classeur, à garder sous la main.</p>
+  </header>
+
+  @if (workbook.data().portionGuides.length === 0) {
+    <div class="empty-state">Importez un classeur contenant la feuille « Repères portions ».</div>
+  } @else {
+    <section class="portion-list" aria-label="Repères portions">
+      @for (portion of workbook.data().portionGuides; track portion.id) {
+        <article class="portion-card">
+          <span class="portion-icon" aria-hidden="true">◉</span>
+          <div class="portion-copy">
+            <h2>{{ portion.food }}</h2>
+            <strong>{{ portion.portion }}</strong>
+            <p>{{ portion.note }}</p>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</div>

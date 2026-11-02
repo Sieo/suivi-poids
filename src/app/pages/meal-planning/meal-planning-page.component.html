@@ -1,0 +1,124 @@
+<div class="page-content">
+  <app-meal-planning-hero />
+
+  <section class="week-section" aria-label="Planning de la semaine">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">VOTRE ORGANISATION</p>
+        <h2>Planning semaine</h2>
+        <p class="section-description">{{ workbook.data().week.title }}</p>
+      </div>
+      <span class="week-range">{{ weekRange() }}</span>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-card">
+        <span class="summary-icon">▦</span><strong>{{ plans().length * 3 }}</strong
+        ><small>repas prévus</small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-icon followed">✓</span><strong>{{ followedCount() }}</strong
+        ><small>repas respectés</small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-icon pending">◷</span><strong>{{ pendingCount() }}</strong
+        ><small>à renseigner</small>
+      </div>
+    </div>
+
+    @if (plans().length === 0) {
+      <div class="empty-state">
+        <span aria-hidden="true">▦</span>
+        <h3>Aucun repas dans ce planning</h3>
+        <p>Importez un classeur Excel contenant la feuille « Planning semaine ».</p>
+      </div>
+    } @else {
+      <div class="day-tabs" role="group" aria-label="Choisir un jour">
+        @for (plan of plans(); track trackPlan($index, plan)) {
+          <button
+            type="button"
+            class="day-tab"
+            [class.selected]="selectedPlan()?.id === plan.id"
+            [attr.aria-pressed]="selectedPlan()?.id === plan.id"
+            (click)="selectedPlanId.set(plan.id)"
+          >
+            <span>{{ plan.dayLabel }}</span>
+            <strong>{{ plan.plannedOn | date: 'd' }}</strong>
+          </button>
+        }
+      </div>
+
+      @if (selectedPlan(); as plan) {
+        <section class="day-plan" aria-labelledby="day-heading">
+          <div class="day-heading">
+            <div>
+              <p class="section-kicker">VOTRE JOURNÉE</p>
+              <h3 id="day-heading">{{ plan.dayLabel }}</h3>
+            </div>
+            @if (plan.estimatedKcal) {
+              <span class="energy-badge"
+                >Énergie indicative <strong>{{ plan.estimatedKcal }}</strong></span
+              >
+            }
+          </div>
+
+          <div class="meal-list">
+            @for (period of periodLabels; track period.key) {
+              <article class="meal-row">
+                <span class="meal-icon" aria-hidden="true">{{ period.icon }}</span>
+                <div class="meal-detail">
+                  <div class="meal-label">
+                    {{ period.label }} <small>{{ period.time }}</small>
+                  </div>
+                  <p>
+                    {{
+                      mealStatus(plan, period.key) === 'planned' && !plan[period.key].description
+                        ? 'Aucun repas renseigné'
+                        : plan[period.key].description
+                    }}
+                  </p>
+                </div>
+                <label
+                  class="meal-status"
+                  [class.status-followed]="mealStatus(plan, period.key) === 'respected'"
+                  [class.status-missed]="mealStatus(plan, period.key) === 'not-respected'"
+                >
+                  <span class="status-dot"></span>
+                  <select
+                    [value]="mealStatus(plan, period.key)"
+                    [attr.aria-label]="'Suivi : ' + period.label"
+                    (change)="setStatus(plan, period.key, $event)"
+                  >
+                    <option value="planned">À renseigner</option>
+                    <option value="respected">Respecté</option>
+                    <option value="not-respected">Non respecté</option>
+                  </select>
+                </label>
+              </article>
+            }
+          </div>
+
+          @if (plan.snacks) {
+            <div class="snack-note">
+              <span aria-hidden="true">✦</span>
+              <div>
+                <strong>Collations, selon la faim</strong>
+                <p>{{ plan.snacks }}</p>
+              </div>
+            </div>
+          }
+
+          <label class="notes-field">
+            <span>Notes et écarts</span>
+            <textarea
+              [value]="plan.notes"
+              rows="2"
+              placeholder="Une remarque sur cette journée…"
+              (change)="updateNote(plan, $event)"
+            ></textarea>
+          </label>
+        </section>
+      }
+    }
+  </section>
+</div>

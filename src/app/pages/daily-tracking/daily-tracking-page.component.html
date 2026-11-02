@@ -1,0 +1,138 @@
+<div class="page-content">
+  <header class="page-heading">
+    <p class="eyebrow">OBSERVER, PAS JUGER</p>
+    <h1>Suivi quotidien</h1>
+    <p>Quelques repères pour mieux comprendre vos journées. Le poids reste facultatif.</p>
+  </header>
+
+  @if (workbook.data().dailyLogs.length === 0) {
+    <div class="empty-state">Importez un classeur contenant la feuille « Suivi quotidien ».</div>
+  } @else {
+    <div class="daily-list">
+      @for (log of workbook.data().dailyLogs; track log.id) {
+        <article class="daily-card">
+          <header class="daily-card-heading">
+            <div>
+              <span class="day-label">{{ log.loggedOn | date: 'EEEE' }}</span>
+              <h2>{{ log.loggedOn | date: 'd MMMM' }}</h2>
+            </div>
+            <span class="gentle-reminder">À votre rythme</span>
+          </header>
+
+          <div class="metrics-grid">
+            <label class="metric-field">
+              <span>Poids <small>facultatif</small></span>
+              <div class="input-with-unit">
+                <input
+                  type="number"
+                  min="0"
+                  max="500"
+                  step="0.1"
+                  inputmode="decimal"
+                  [value]="log.weightKg ?? ''"
+                  placeholder="—"
+                  [attr.aria-label]="'Poids du ' + (log.loggedOn | date: 'd MMMM')"
+                  (change)="updateNumber(log, 'weightKg', $event)"
+                />
+                <span>kg</span>
+              </div>
+            </label>
+            <label class="metric-field">
+              <span>Faim / satiété <small>sur 5</small></span>
+              <div class="input-with-unit">
+                <input
+                  type="number"
+                  min="1"
+                  max="5"
+                  step="1"
+                  inputmode="numeric"
+                  [value]="log.hungerLevel ?? ''"
+                  placeholder="—"
+                  [attr.aria-label]="'Faim ou satiété du ' + (log.loggedOn | date: 'd MMMM')"
+                  (change)="updateNumber(log, 'hungerLevel', $event)"
+                />
+                <span>/ 5</span>
+              </div>
+            </label>
+            <label class="metric-field">
+              <span>Eau</span>
+              <div class="input-with-unit">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="1"
+                  inputmode="numeric"
+                  [value]="log.waterGlasses ?? ''"
+                  placeholder="—"
+                  [attr.aria-label]="'Verres d’eau du ' + (log.loggedOn | date: 'd MMMM')"
+                  (change)="updateNumber(log, 'waterGlasses', $event)"
+                />
+                <span>verres</span>
+              </div>
+            </label>
+            <label class="metric-field">
+              <span>Sommeil</span>
+              <div class="input-with-unit">
+                <input
+                  type="number"
+                  min="0"
+                  max="24"
+                  step="0.5"
+                  inputmode="decimal"
+                  [value]="log.sleepHours ?? ''"
+                  placeholder="—"
+                  [attr.aria-label]="'Sommeil du ' + (log.loggedOn | date: 'd MMMM')"
+                  (change)="updateNumber(log, 'sleepHours', $event)"
+                />
+                <span>heures</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="details-grid">
+            <label class="text-field">
+              <span>Activité réalisée</span>
+              <input
+                type="text"
+                [value]="log.activity"
+                placeholder="Une promenade, du repos…"
+                (change)="updateText(log, 'activity', $event)"
+              />
+            </label>
+            <label class="text-field">
+              <span>Repas / portions suivis</span>
+              <input
+                type="text"
+                [value]="log.mealsFollowed"
+                placeholder="Un repère si vous le souhaitez"
+                (change)="updateText(log, 'mealsFollowed', $event)"
+              />
+            </label>
+            <label class="text-field emotional-field">
+              <span>Faim émotionnelle / grignotage ?</span>
+              <select
+                [value]="log.emotionalHunger === null ? '' : log.emotionalHunger"
+                (change)="updateEmotionalHunger(log, $event)"
+              >
+                <option value="">Non renseigné</option>
+                <option value="true">Oui</option>
+                <option value="false">Non</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="text-field comment-field">
+            <span>Commentaire</span>
+            <textarea
+              rows="2"
+              [value]="log.notes ?? ''"
+              placeholder="Comment vous êtes-vous senti·e aujourd’hui ?"
+              (change)="updateText(log, 'notes', $event)"
+            ></textarea>
+          </label>
+        </article>
+      }
+    </div>
+  }
+</div>

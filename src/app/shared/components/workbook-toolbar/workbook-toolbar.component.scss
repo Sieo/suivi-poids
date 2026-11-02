@@ -1,0 +1,155 @@
+:host {
+  display: block;
+}
+
+.topbar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid #efeee8;
+  display: flex;
+  height: 66px;
+  justify-content: space-between;
+  padding: 0 clamp(22px, 4vw, 58px);
+}
+
+.breadcrumb {
+  align-items: center;
+  color: #9a9c92;
+  display: flex;
+  font-size: 11px;
+  gap: 11px;
+}
+
+.breadcrumb strong {
+  color: #4a5149;
+  font-weight: 650;
+}
+
+.topbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 17px;
+  min-width: 0;
+}
+
+.source-name {
+  align-items: center;
+  color: #858a7e;
+  display: inline-flex;
+  font-size: 10px;
+  gap: 7px;
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sync-dot {
+  background: #a9b980;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  height: 6px;
+  width: 6px;
+}
+
+.import-button {
+  align-items: center;
+  background: #315d43;
+  border: 1px solid #315d43;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 650;
+  gap: 7px;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  transition: background 150ms ease;
+  white-space: nowrap;
+}
+
+.import-button:hover {
+  background: #264b35;
+}
+
+.import-button.importing {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.import-button input {
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+.import-button:focus-within {
+  outline: 2px solid #68835d;
+  outline-offset: 3px;
+}
+
+.feedback {
+  align-items: center;
+  border-bottom: 1px solid;
+  display: flex;
+  font-size: 11px;
+  justify-content: space-between;
+  padding: 11px clamp(22px, 4vw, 58px);
+}
+
+.feedback.error {
+  background: #fff3ef;
+  border-color: #f0d7cc;
+  color: #9b493c;
+}
+
+.feedback.success {
+  background: #f1f5ee;
+  border-color: #e2e9dc;
+  color: #4e7049;
+}
+
+.feedback button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+@media (max-width: 850px) {
+  .topbar {
+    height: 55px;
+    padding: 0 18px;
+  }
+
+  .source-name {
+    display: none;
+  }
+
+  .topbar-actions {
+    gap: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    height: 52px;
+    padding: 0 14px;
+  }
+
+  .breadcrumb {
+    font-size: 9px;
+    gap: 7px;
+  }
+
+  .import-button {
+    font-size: 9px;
+    min-height: 32px;
+    padding: 0 8px;
+  }
+}

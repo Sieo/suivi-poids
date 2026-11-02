@@ -1,0 +1,25 @@
+<div class="page-content">
+  <header class="page-heading">
+    <p class="eyebrow">À GARDER EN TÊTE</p>
+    <h1>À lire</h1>
+    <p>{{ workbook.data().week.title }}</p>
+  </header>
+
+  @if (workbook.data().readingItems.length === 0) {
+    <div class="empty-state">
+      Importez un classeur contenant la feuille « À lire » pour retrouver ses informations.
+    </div>
+  } @else {
+    <section class="reading-list" aria-label="Informations importantes">
+      @for (item of workbook.data().readingItems; track item.id) {
+        <article class="reading-card">
+          <span class="reading-mark" aria-hidden="true">✦</span>
+          <div>
+            <span class="reading-category">{{ item.category }}</span>
+            <p>{{ item.content }}</p>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</div>

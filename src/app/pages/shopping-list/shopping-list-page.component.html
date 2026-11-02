@@ -1,0 +1,57 @@
+<div class="page-content">
+  <header class="page-heading">
+    <p class="eyebrow">FAITES SIMPLE, UNE RAYONNÉE À LA FOIS</p>
+    <h1>Liste de courses</h1>
+    <p>Les quantités sont indicatives pour une personne et une semaine.</p>
+  </header>
+
+  <div class="shopping-progress">
+    <span aria-hidden="true">✓</span>
+    <strong
+      >{{ purchasedCount() }} /
+      {{ workbook.data().shoppingItems.length - shoppingNotes().length }}</strong
+    >
+    <span>articles cochés</span>
+  </div>
+
+  @if (categories().length === 0) {
+    <div class="empty-state">Importez un classeur contenant la feuille « Liste de courses ».</div>
+  } @else {
+    <div class="shopping-groups">
+      @for (group of categories(); track group.name) {
+        <section class="shopping-group">
+          <h2>
+            <span class="category-mark" aria-hidden="true">·</span>{{ group.name
+            }}<small>{{ group.items.length }}</small>
+          </h2>
+          <ul>
+            @for (item of group.items; track item.id) {
+              <li [class.purchased]="item.isPurchased">
+                <label class="shopping-item">
+                  <input
+                    type="checkbox"
+                    [checked]="item.isPurchased"
+                    [aria-label]="'Marquer comme acheté : ' + item.name"
+                    (change)="updatePurchased(item, $event)"
+                  />
+                  <span class="custom-check" aria-hidden="true">✓</span>
+                  <span class="item-name">{{ item.name }}</span>
+                  <strong>{{ item.quantity }}</strong>
+                </label>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+  }
+
+  @if (shoppingNotes().length > 0) {
+    <aside class="shopping-note">
+      <strong>À garder en tête</strong>
+      @for (note of shoppingNotes(); track note) {
+        <p>{{ note }}</p>
+      }
+    </aside>
+  }
+</div>

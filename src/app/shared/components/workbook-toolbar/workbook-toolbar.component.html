@@ -1,0 +1,41 @@
+<header class="topbar">
+  <div class="breadcrumb">
+    <span>Tempo</span><span aria-hidden="true">/</span><strong>Mon suivi alimentaire</strong>
+  </div>
+  <div class="topbar-actions">
+    @if (workbook.data().sourceFileName) {
+      <span class="source-name" [title]="workbook.data().sourceFileName!">
+        <span class="sync-dot"></span>
+        {{ workbook.data().sourceFileName }}
+      </span>
+    } @else {
+      <span class="source-name"><span class="sync-dot"></span> Exemple local</span>
+    }
+    <label class="import-button" [class.importing]="importing()">
+      <input
+        type="file"
+        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        (change)="onFileSelected($event)"
+        [disabled]="importing()"
+      />
+      <span aria-hidden="true">↥</span>
+      {{ importing() ? 'Import en cours…' : 'Importer un fichier .xlsx' }}
+    </label>
+  </div>
+</header>
+
+@if (workbook.error(); as error) {
+  <div class="feedback error" role="alert">
+    <span>{{ error }}</span>
+    <button type="button" aria-label="Fermer le message" (click)="workbook.error.set(null)">
+      ×
+    </button>
+  </div>
+} @else if (workbook.notice(); as notice) {
+  <div class="feedback success" role="status">
+    <span>{{ notice }}</span>
+    <button type="button" aria-label="Fermer le message" (click)="workbook.notice.set(null)">
+      ×
+    </button>
+  </div>
+}

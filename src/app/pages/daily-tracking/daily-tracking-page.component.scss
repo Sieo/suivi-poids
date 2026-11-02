@@ -1,0 +1,140 @@
+.daily-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 21px;
+}
+
+.daily-card {
+  background: white;
+  border: 1px solid #eeede7;
+  border-radius: 10px;
+  padding: 17px;
+}
+
+.daily-card-heading {
+  align-items: center;
+  border-bottom: 1px solid #f0efe9;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.day-label {
+  color: #8d967d;
+  font-size: 8px;
+  text-transform: capitalize;
+}
+
+.daily-card-heading h2 {
+  color: #3e4d3e;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 400;
+  margin: 3px 0 0;
+  text-transform: capitalize;
+}
+
+.gentle-reminder {
+  background: #f2f4ed;
+  border-radius: 15px;
+  color: #7d8c76;
+  font-size: 8px;
+  padding: 6px 9px;
+}
+
+.metrics-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 13px;
+}
+
+.metric-field,
+.text-field {
+  color: #6a7165;
+  display: grid;
+  font-size: 9px;
+  gap: 6px;
+  min-width: 0;
+}
+
+.metric-field > span small {
+  color: #a4a69b;
+  font-size: 8px;
+}
+
+.input-with-unit {
+  align-items: center;
+  background: #fcfcf9;
+  border: 1px solid #eaeae2;
+  border-radius: 6px;
+  display: flex;
+  height: 34px;
+  padding: 0 8px;
+}
+
+.input-with-unit input {
+  background: transparent;
+  border: 0;
+  color: #596153;
+  font: inherit;
+  font-size: 10px;
+  min-width: 0;
+  outline: 0;
+  width: 100%;
+}
+
+.input-with-unit span {
+  color: #a1a397;
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+.details-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.text-field input,
+.text-field select,
+.text-field textarea {
+  background: #fcfcf9;
+  border: 1px solid #eaeae2;
+  border-radius: 6px;
+  color: #596153;
+  font: inherit;
+  font-size: 9px;
+  min-height: 34px;
+  padding: 8px;
+  width: 100%;
+}
+
+.text-field textarea {
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.comment-field {
+  margin-top: 12px;
+}
+
+.comment-field textarea {
+  min-height: 49px;
+}
+
+@media (max-width: 650px) {
+  .daily-card {
+    padding: 13px;
+  }
+
+  .metrics-grid {
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,45 @@
+<aside class="sidebar" aria-label="Navigation principale">
+  <a class="brand" href="#" aria-label="Tempo, accueil">
+    <span class="brand-mark" aria-hidden="true">t</span>
+    <span>tempo<span class="brand-period">.</span></span>
+  </a>
+
+  <div class="sidebar-label">ESPACE PERSONNEL</div>
+  <nav class="navigation">
+    <a
+      class="nav-link"
+      routerLink="/planning-semaine"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="nav-icon" aria-hidden="true">⌂</span>
+      Planning semaine
+    </a>
+    <a class="nav-link" routerLink="/reperes-portions" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">◉</span>
+      Repères portions
+    </a>
+    <a class="nav-link" routerLink="/liste-de-courses" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">☷</span>
+      Liste de courses
+    </a>
+    <a class="nav-link" routerLink="/suivi-quotidien" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">♡</span>
+      Suivi quotidien
+    </a>
+    <a class="nav-link" routerLink="/a-lire" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">ⓘ</span>
+      À lire
+    </a>
+  </nav>
+
+  <div class="sidebar-note">
+    <span class="note-icon" aria-hidden="true">✦</span>
+    <p>Un pas après l’autre.<br /><strong>À votre rythme.</strong></p>
+  </div>
+  <div class="profile-chip">
+    <span class="avatar" aria-hidden="true">S</span>
+    <span class="profile-name">Mon espace<small>Profil personnel</small></span>
+    <span class="profile-menu" aria-hidden="true">···</span>
+  </div>
+</aside>

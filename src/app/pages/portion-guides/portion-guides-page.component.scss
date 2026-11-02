@@ -1,0 +1,58 @@
+.portion-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 24px;
+}
+
+.portion-card {
+  align-items: flex-start;
+  background: white;
+  border: 1px solid #eeede7;
+  border-radius: 10px;
+  display: flex;
+  gap: 13px;
+  min-height: 112px;
+  padding: 17px;
+}
+
+.portion-icon {
+  align-items: center;
+  background: #edf2e8;
+  border-radius: 8px;
+  color: #71845f;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.portion-copy h2 {
+  color: #455347;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.portion-copy strong {
+  color: #77845f;
+  display: block;
+  font-size: 10px;
+  margin-top: 7px;
+}
+
+.portion-copy p {
+  color: #8b8f84;
+  font-size: 9px;
+  line-height: 1.6;
+  margin: 6px 0 0;
+}
+
+@media (max-width: 650px) {
+  .portion-list {
+    grid-template-columns: 1fr;
+    margin-top: 17px;
+  }
+}
