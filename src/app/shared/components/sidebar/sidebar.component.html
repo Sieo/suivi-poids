@@ -6,6 +6,10 @@
 
   <div class="sidebar-label">ESPACE PERSONNEL</div>
   <nav class="navigation">
+    <a class="nav-link" routerLink="/recapitulatif" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">▦</span>
+      Récapitulatif
+    </a>
     <a
       class="nav-link"
       routerLink="/planning-semaine"
@@ -38,8 +42,9 @@
     <p>Un pas après l’autre.<br /><strong>À votre rythme.</strong></p>
   </div>
   <div class="profile-chip">
-    <span class="avatar" aria-hidden="true">S</span>
-    <span class="profile-name">Mon espace<small>Profil personnel</small></span>
-    <span class="profile-menu" aria-hidden="true">···</span>
+    <span class="avatar" aria-hidden="true">{{
+      auth.user()?.email?.slice(0, 1)?.toUpperCase()
+    }}</span>
+    <span class="profile-name">{{ auth.user()?.email }}<small>Compte personnel</small></span>
   </div>
 </aside>

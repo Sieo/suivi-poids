@@ -9,27 +9,52 @@
         {{ workbook.data().sourceFileName }}
       </span>
     } @else {
-      <span class="source-name"><span class="sync-dot"></span> Exemple local</span>
+      <span class="source-name"><span class="sync-dot"></span> Aucun classeur importé</span>
     }
+    <button
+      class="export-button"
+      type="button"
+      (click)="onExport()"
+      [disabled]="exporting() || !workbook.ready() || workbook.signingOut()"
+    >
+      <span aria-hidden="true">↧</span>
+      {{ exporting() ? 'Export en cours…' : 'Télécharger Excel' }}
+    </button>
     <label class="import-button" [class.importing]="importing()">
       <input
         type="file"
         accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         (change)="onFileSelected($event)"
-        [disabled]="importing()"
+        [disabled]="importing() || !workbook.ready() || workbook.signingOut()"
       />
       <span aria-hidden="true">↥</span>
       {{ importing() ? 'Import en cours…' : 'Importer un fichier .xlsx' }}
     </label>
+    <button
+      class="sign-out-button"
+      type="button"
+      (click)="onSignOut()"
+      [disabled]="signingOut() || workbook.signingOut()"
+    >
+      {{ signingOut() ? 'Déconnexion…' : 'Déconnexion' }}
+    </button>
   </div>
 </header>
 
 @if (workbook.error(); as error) {
   <div class="feedback error" role="alert">
     <span>{{ error }}</span>
+    @if (!workbook.ready() && auth.user()) {
+      <button type="button" (click)="retryLoading()">Réessayer</button>
+    }
     <button type="button" aria-label="Fermer le message" (click)="workbook.error.set(null)">
       ×
     </button>
+  </div>
+} @else if (auth.error(); as error) {
+  <div class="feedback error" role="alert">
+    <span>{{ error }}</span>
+    <button type="button" aria-label="Fermer le message" (click)="auth.error.set(null)">×</button>
   </div>
 } @else if (workbook.notice(); as notice) {
   <div class="feedback success" role="status">

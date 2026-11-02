@@ -70,6 +70,28 @@
   white-space: nowrap;
 }
 
+.export-button {
+  align-items: center;
+  background: #f3f5ef;
+  border: 1px solid #dfe5da;
+  border-radius: 7px;
+  color: #315d43;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 650;
+  gap: 7px;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 11px;
+  white-space: nowrap;
+}
+
+.export-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
 .import-button:hover {
   background: #264b35;
 }
@@ -90,6 +112,31 @@
 .import-button:focus-within {
   outline: 2px solid #68835d;
   outline-offset: 3px;
+}
+
+.sign-out-button {
+  background: transparent;
+  border: 0;
+  color: #596850;
+  cursor: pointer;
+  font-size: 10px;
+  padding: 6px;
+  white-space: nowrap;
+}
+
+.sign-out-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.feedback.error > button:not([aria-label]) {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: auto;
+  padding: 5px 8px;
 }
 
 .feedback {
@@ -132,7 +179,12 @@
   }
 
   .topbar-actions {
-    gap: 0;
+    gap: 4px;
+  }
+
+  .sign-out-button {
+    font-size: 9px;
+    padding: 5px 2px;
   }
 }
 
@@ -151,5 +203,20 @@
     font-size: 9px;
     min-height: 32px;
     padding: 0 8px;
+  }
+
+  .export-button {
+    font-size: 0;
+    gap: 0;
+    min-height: 32px;
+    padding: 0 9px;
+  }
+
+  .export-button span {
+    font-size: 15px;
+  }
+
+  .sign-out-button {
+    font-size: 8px;
   }
 }

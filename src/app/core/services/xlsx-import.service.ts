@@ -140,23 +140,44 @@ const rowsFor = (sheets: WorkbookSheet, name: string): CellValue[][] => {
 
 const parseWeek = (readingRows: CellValue[][]): Week => {
   const title = cellText(readingRows[0]?.[0]);
-  const match = title.match(/semaine\s+du\s+(\d{1,2})\s+au\s+(\d{1,2})\s+([\p{L}]+)\s+(\d{4})/iu);
+  const match = title.match(
+    /semaine\s+du\s+(\d{1,2})(?:\s+([\p{L}]+)\s+(\d{4}))?\s+au\s+(\d{1,2})(?:\s+([\p{L}]+))?\s+(\d{4})/iu,
+  );
   if (!match) {
     throw new Error(
       'La feuille « À lire » doit indiquer la période, par exemple « semaine du 3 au 9 novembre 2026 ».',
     );
   }
 
-  const month = MONTHS[normalize(match[3]).replace(/\s/g, '')];
-  if (month === undefined) {
-    throw new Error(`Mois non reconnu dans le titre de la semaine : ${match[3]}.`);
+  const startMonthName = match[2] ?? match[5];
+  const endMonthName = match[5] ?? match[2];
+  if (!startMonthName || !endMonthName) {
+    throw new Error('La période indiquée dans la feuille « À lire » doit contenir un mois.');
   }
-  const year = Number(match[4]);
-  const startsOn = new Date(year, month, Number(match[1]));
-  const endsOn = new Date(year, month, Number(match[2]));
+  const startMonth = MONTHS[normalize(startMonthName).replace(/\s/g, '')];
+  const endMonth = MONTHS[normalize(endMonthName).replace(/\s/g, '')];
+  if (startMonth === undefined || endMonth === undefined) {
+    throw new Error(`Mois non reconnu dans le titre de la semaine : ${startMonthName}.`);
+  }
+  const endYear = Number(match[6]);
+  const startYear = match[3] ? Number(match[3]) : endYear;
+  const startsOn = new Date(startYear, startMonth, Number(match[1]));
+  const endsOn = new Date(endYear, endMonth, Number(match[4]));
 
-  if (endsOn < startsOn) {
+  if (!match[3] && endsOn < startsOn) {
     endsOn.setFullYear(endsOn.getFullYear() + 1);
+  }
+
+  if (
+    startsOn.getFullYear() !== startYear ||
+    startsOn.getMonth() !== startMonth ||
+    startsOn.getDate() !== Number(match[1]) ||
+    endsOn.getFullYear() !== (match[3] ? endYear : endsOn.getFullYear()) ||
+    endsOn.getMonth() !== endMonth ||
+    endsOn.getDate() !== Number(match[4]) ||
+    endsOn < startsOn
+  ) {
+    throw new Error('La période indiquée dans la feuille « À lire » est invalide.');
   }
 
   return {

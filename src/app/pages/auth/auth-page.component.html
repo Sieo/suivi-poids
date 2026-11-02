@@ -1,0 +1,71 @@
+<main class="auth-page">
+  <section class="auth-card" aria-labelledby="auth-heading">
+    <a class="auth-brand" routerLink="/" aria-label="Tempo, accueil">
+      <span class="brand-mark" aria-hidden="true">t</span>
+      <span>tempo<span class="brand-period">.</span></span>
+    </a>
+    <p class="eyebrow">VOTRE ESPACE PERSONNEL</p>
+    <h1 id="auth-heading">{{ creatingAccount() ? 'Créer un compte' : 'Connexion' }}</h1>
+    <p class="intro">
+      {{
+        creatingAccount()
+          ? 'Créez votre espace privé pour commencer votre suivi.'
+          : 'Retrouvez votre suivi alimentaire, synchronisé sur vos appareils.'
+      }}
+    </p>
+
+    <form (ngSubmit)="submit()">
+      <label>
+        Adresse e-mail
+        <input
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+        />
+      </label>
+      <label>
+        Mot de passe
+        <input
+          type="password"
+          name="password"
+          [attr.autocomplete]="creatingAccount() ? 'new-password' : 'current-password'"
+          [attr.minlength]="creatingAccount() ? 8 : null"
+          required
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+        />
+        @if (creatingAccount()) {
+          <small>8 caractères minimum</small>
+        }
+      </label>
+
+      @if (auth.error(); as error) {
+        <p class="form-message error" role="alert">{{ error }}</p>
+      }
+      @if (message(); as confirmation) {
+        <p class="form-message success" role="status">{{ confirmation }}</p>
+      }
+
+      <button type="submit" [disabled]="submitting()">
+        {{
+          submitting()
+            ? 'Veuillez patienter…'
+            : creatingAccount()
+              ? 'Créer mon compte'
+              : 'Se connecter'
+        }}
+      </button>
+    </form>
+
+    <p class="mode-switch">
+      {{ creatingAccount() ? 'Vous avez déjà un compte ?' : 'Pas encore de compte ?' }}
+      <button type="button" (click)="toggleMode()">
+        {{ creatingAccount() ? 'Se connecter' : 'Créer un compte' }}
+      </button>
+    </p>
+    <p class="privacy-note">Vos données de suivi sont privées et associées à votre compte.</p>
+  </section>
+</main>

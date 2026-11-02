@@ -1,0 +1,164 @@
+<div class="page-content dashboard-page">
+  <header class="page-heading">
+    <p class="eyebrow">VOTRE PARCOURS, EN UN COUP D’ŒIL</p>
+    <h1>Récapitulatif</h1>
+    <p>{{ workbook.data().week.title }} · Des repères pour observer vos habitudes sans jugement.</p>
+  </header>
+
+  @if (!workbook.data().sourceFileName) {
+    <section class="import-prompt empty-state">
+      <div>
+        <strong>Commencez par importer votre classeur</strong>
+        <p>Votre planning et vos repères apparaîtront ici après l’import.</p>
+      </div>
+      <a routerLink="/planning-semaine">Voir le planning</a>
+    </section>
+  }
+
+  <section class="overview-grid" aria-label="Résumé du suivi">
+    <article class="overview-card weight-overview">
+      <span class="card-icon" aria-hidden="true">↗</span>
+      <div>
+        <p>Dernier poids renseigné</p>
+        <strong>
+          @if (latestWeight() === null) {
+            —
+          } @else {
+            {{ latestWeight() | number: '1.1-1' }} <small>kg</small>
+          }
+        </strong>
+        @if (weightChange() !== null) {
+          <span class="metric-detail"
+            >{{ formatWeightChange(weightChange()!) }} depuis la première mesure</span
+          >
+        } @else {
+          <span class="metric-detail">Au moins deux mesures permettent de voir l’évolution.</span>
+        }
+      </div>
+    </article>
+    <article class="overview-card hydration-overview">
+      <span class="card-icon" aria-hidden="true">◌</span>
+      <div>
+        <p>Hydratation moyenne</p>
+        <strong>
+          @if (averageHydration() === null) {
+            —
+          } @else {
+            {{ averageHydration() | number: '1.1-1' }} <small>verres / jour</small>
+          }
+        </strong>
+        <span class="metric-detail">{{ hydrationDays() }} jour(s) renseigné(s)</span>
+      </div>
+    </article>
+    <article class="overview-card meals-overview">
+      <span class="card-icon" aria-hidden="true">✓</span>
+      <div>
+        <p>Repas respectés</p>
+        <strong>
+          @if (mealCounts().adherence === null) {
+            —
+          } @else {
+            {{ mealCounts().adherence | number: '1.0-0' }} <small>%</small>
+          }
+        </strong>
+        <span class="metric-detail"
+          >{{ mealCounts().respected }} repas renseigné(s) comme respectés</span
+        >
+      </div>
+    </article>
+  </section>
+
+  <section class="dashboard-grid">
+    <article class="panel weight-panel">
+      <header class="panel-heading">
+        <div>
+          <p class="section-kicker">TENDANCE</p>
+          <h2>Évolution du poids</h2>
+        </div>
+        <span class="measurement-count">{{ weightPoints().length }} mesure(s)</span>
+      </header>
+
+      @if (weightPoints().length === 0) {
+        <div class="chart-empty">Vos pesées apparaîtront ici lorsque vous en aurez renseigné.</div>
+      } @else {
+        <div class="weight-chart">
+          <svg
+            viewBox="0 0 100 160"
+            preserveAspectRatio="none"
+            role="img"
+            [attr.aria-label]="'Évolution du poids, ' + weightPoints().length + ' mesures'"
+          >
+            <line x1="0" y1="20" x2="100" y2="20" class="chart-gridline" />
+            <line x1="0" y1="80" x2="100" y2="80" class="chart-gridline" />
+            <line x1="0" y1="145" x2="100" y2="145" class="chart-gridline" />
+            @if (weightPoints().length > 1) {
+              <polyline [attr.points]="weightPath()" class="weight-line" />
+            }
+            @for (point of weightPoints(); track point.date) {
+              <circle [attr.cx]="point.x" [attr.cy]="point.y" r="1.7" class="weight-point">
+                <title>{{ point.date | date: 'd MMMM' }} : {{ point.weight }} kg</title>
+              </circle>
+            }
+          </svg>
+        </div>
+        <div class="chart-dates">
+          <span>{{ weightPoints()[0].date | date: 'd MMM' }}</span>
+          <span>{{ weightPoints()[weightPoints().length - 1].date | date: 'd MMM' }}</span>
+        </div>
+        <ul class="weight-data-list" aria-label="Mesures de poids">
+          @for (point of weightPoints(); track point.date) {
+            <li>
+              <time [attr.datetime]="point.date">{{ point.date | date: 'd MMM' }}</time
+              ><strong>{{ point.weight | number: '1.1-1' }} kg</strong>
+            </li>
+          }
+        </ul>
+      }
+    </article>
+
+    <article class="panel habits-panel">
+      <header class="panel-heading">
+        <div>
+          <p class="section-kicker">VOS HABITUDES</p>
+          <h2>Comment ça se passe ?</h2>
+        </div>
+      </header>
+      <div class="insight-list">
+        @for (insight of insights(); track insight.title) {
+          <section class="insight" [class]="insight.tone">
+            <span class="insight-mark" aria-hidden="true">
+              {{ insight.tone === 'positive' ? '✓' : insight.tone === 'attention' ? '·' : '○' }}
+            </span>
+            <div>
+              <h3>{{ insight.title }}</h3>
+              <strong>{{ insight.value }}</strong>
+              <p>{{ insight.detail }}</p>
+            </div>
+          </section>
+        }
+      </div>
+      <p class="gentle-note">
+        Les repères sont indicatifs et ne remplacent pas un avis médical. Chaque journée est une
+        information, pas une note.
+      </p>
+    </article>
+  </section>
+
+  <section class="activity-summary" aria-label="Autres informations">
+    <div>
+      <span>Sommeil moyen</span
+      ><strong>{{
+        averageSleep() === null ? '—' : (averageSleep() | number: '1.1-1') + ' h'
+      }}</strong>
+    </div>
+    <div>
+      <span>Repas à renseigner</span><strong>{{ mealCounts().planned }}</strong>
+    </div>
+    <div>
+      <span>Repas non respectés</span><strong>{{ mealCounts().notRespected }}</strong>
+    </div>
+    <a routerLink="/suivi-quotidien"
+      >Compléter le suivi quotidien <span aria-hidden="true">→</span></a
+    >
+  </section>
+</div>

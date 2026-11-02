@@ -16,3 +16,20 @@ export interface WorkbookData {
   dailyLogs: DailyLog[];
   readingItems: ReadingItem[];
 }
+
+export const isWorkbookData = (value: unknown): value is WorkbookData => {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const data = value as Partial<WorkbookData>;
+  return (
+    data.version === 1 &&
+    !!data.week &&
+    Array.isArray(data.mealPlans) &&
+    Array.isArray(data.portionGuides) &&
+    Array.isArray(data.shoppingItems) &&
+    Array.isArray(data.dailyLogs) &&
+    Array.isArray(data.readingItems)
+  );
+};

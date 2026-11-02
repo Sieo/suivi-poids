@@ -1,5 +1,11 @@
-<app-sidebar />
-<main class="main-content">
-  <app-workbook-toolbar />
+@if (!auth.initialized()) {
+  <main class="session-loading" role="status">Connexion à votre espace…</main>
+} @else if (auth.user()) {
+  <app-sidebar [attr.inert]="workbook.signingOut() ? '' : null" />
+  <main class="main-content" [attr.inert]="workbook.signingOut() ? '' : null">
+    <app-workbook-toolbar />
+    <router-outlet />
+  </main>
+} @else {
   <router-outlet />
-</main>
+}
