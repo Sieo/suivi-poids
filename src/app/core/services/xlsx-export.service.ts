@@ -10,6 +10,17 @@ const dateLabel = (isoDate: string): string => {
   return `${weekday.charAt(0).toLocaleUpperCase('fr-FR')}${weekday.slice(1)} ${date.getDate()}`;
 };
 
+const fullDateLabel = (isoDate: string): string => {
+  const date = new Date(`${isoDate}T00:00:00`);
+  const label = new Intl.DateTimeFormat('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(date);
+  return `${label.charAt(0).toLocaleUpperCase('fr-FR')}${label.slice(1)}`;
+};
+
 const mealStatusCell = (status: MealStatus): string =>
   status === 'respected' ? '☑' : status === 'not-respected' ? '☐' : '';
 
@@ -113,7 +124,7 @@ export const buildWorkbookSheets = (data: WorkbookData): ExportSheet[] => {
         ...dates.map((date) => {
           const log = logsByDate.get(date);
           return [
-            dateLabel(date),
+            fullDateLabel(date),
             log?.weightKg ?? null,
             log?.hungerLevel ?? null,
             log?.waterGlasses ?? null,

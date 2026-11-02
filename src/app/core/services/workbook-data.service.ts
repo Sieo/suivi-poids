@@ -4,6 +4,38 @@ import { createEmptyWorkbookData } from '../data/empty-workbook-data';
 import { WORKBOOK_STORAGE } from '../storage/workbook-storage';
 import { XlsxImportService } from './xlsx-import.service';
 
+const mergeDailyLogs = (
+  existingLogs: DailyLog[],
+  importedLogs: DailyLog[],
+  profileId: string,
+): DailyLog[] => {
+  const logsByDate = new Map(
+    existingLogs.map((log) => [log.loggedOn, { ...log, profileId }]),
+  );
+
+  for (const importedLog of importedLogs) {
+    const existingLog = logsByDate.get(importedLog.loggedOn);
+    if (!existingLog) {
+      logsByDate.set(importedLog.loggedOn, { ...importedLog, profileId });
+      continue;
+    }
+
+    logsByDate.set(importedLog.loggedOn, {
+      ...existingLog,
+      weightKg: importedLog.weightKg ?? existingLog.weightKg,
+      hungerLevel: importedLog.hungerLevel ?? existingLog.hungerLevel,
+      waterGlasses: importedLog.waterGlasses ?? existingLog.waterGlasses,
+      activity: importedLog.activity || existingLog.activity,
+      mealsFollowed: importedLog.mealsFollowed || existingLog.mealsFollowed,
+      emotionalHunger: importedLog.emotionalHunger ?? existingLog.emotionalHunger,
+      sleepHours: importedLog.sleepHours ?? existingLog.sleepHours,
+      notes: importedLog.notes || existingLog.notes,
+    });
+  }
+
+  return [...logsByDate.values()].sort((a, b) => a.loggedOn.localeCompare(b.loggedOn));
+};
+
 @Injectable({ providedIn: 'root' })
 export class WorkbookDataService {
   private readonly storage = inject(WORKBOOK_STORAGE);
@@ -114,10 +146,7 @@ export class WorkbookDataService {
       const accountData = {
         ...importedData,
         week: { ...importedData.week, profileId: userId },
-        dailyLogs: importedData.dailyLogs.map((log) => ({
-          ...log,
-          profileId: userId,
-        })),
+        dailyLogs: mergeDailyLogs(this.data().dailyLogs, importedData.dailyLogs, userId),
       };
       return await this.commit(
         accountData,

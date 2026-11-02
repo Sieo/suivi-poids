@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { createDemoWorkbookData } from '../data/demo-workbook-data';
 import { WORKBOOK_STORAGE } from '../storage/workbook-storage';
+import { XlsxImportService } from './xlsx-import.service';
 import { WorkbookDataService } from './workbook-data.service';
 
 describe('WorkbookDataService', () => {
@@ -38,6 +39,81 @@ describe('WorkbookDataService', () => {
       'account-b',
       expect.objectContaining({
         mealPlans: expect.arrayContaining([expect.objectContaining({ notes: 'Note du compte B' })]),
+      }),
+    );
+  });
+
+  it('preserves daily history and only replaces same-date values supplied by an import', async () => {
+    const existingData = createDemoWorkbookData();
+    const importedData = createDemoWorkbookData();
+    const overlapDate = importedData.dailyLogs[0].loggedOn;
+    const previousLog = {
+      ...existingData.dailyLogs[0],
+      id: 'previous-week-log',
+      loggedOn: '2024-01-01',
+      weightKg: 84,
+    };
+    const existingOverlapLog = {
+      ...existingData.dailyLogs[0],
+      id: 'existing-overlap-log',
+      loggedOn: overlapDate,
+      weightKg: 80,
+      hungerLevel: 3,
+      waterGlasses: 8,
+      activity: 'Marche',
+      mealsFollowed: 'Repas suivis',
+      emotionalHunger: false,
+      sleepHours: 7,
+      notes: 'Note conservée',
+    };
+    existingData.dailyLogs = [previousLog, existingOverlapLog];
+
+    const importedOverlapLog = importedData.dailyLogs[0];
+    importedOverlapLog.weightKg = 79;
+    importedOverlapLog.waterGlasses = 10;
+
+    const save = vi.fn(async () => undefined);
+    await TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: WORKBOOK_STORAGE,
+          useValue: { load: async () => existingData, save },
+        },
+        {
+          provide: XlsxImportService,
+          useValue: { parse: async () => importedData },
+        },
+      ],
+    }).compileComponents();
+
+    const workbook = TestBed.inject(WorkbookDataService);
+    await workbook.loadForUser('test-user');
+    expect(await workbook.importFile(new File(['workbook'], 'new-week.xlsx'))).toBe(true);
+
+    const logs = workbook.data().dailyLogs;
+    expect(logs).toHaveLength(8);
+    expect(logs.find((log) => log.loggedOn === '2024-01-01')).toMatchObject({
+      weightKg: 84,
+      profileId: 'test-user',
+    });
+    expect(logs.find((log) => log.loggedOn === overlapDate)).toMatchObject({
+      id: 'existing-overlap-log',
+      weightKg: 79,
+      hungerLevel: 3,
+      waterGlasses: 10,
+      activity: 'Marche',
+      mealsFollowed: 'Repas suivis',
+      emotionalHunger: false,
+      sleepHours: 7,
+      notes: 'Note conservée',
+      profileId: 'test-user',
+    });
+    expect(save).toHaveBeenCalledWith(
+      'test-user',
+      expect.objectContaining({
+        dailyLogs: expect.arrayContaining([
+          expect.objectContaining({ id: 'previous-week-log', loggedOn: '2024-01-01' }),
+        ]),
       }),
     );
   });

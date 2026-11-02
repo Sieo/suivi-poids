@@ -194,6 +194,28 @@ const toIsoDate = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const dateForLabel = (label: string, week: Week): string => {
+  const explicitDate = normalize(label).match(/^([a-z]+) (\d{1,2}) ([a-z]+) (\d{4})$/);
+  if (explicitDate) {
+    const weekday = explicitDate[1];
+    const day = Number(explicitDate[2]);
+    const month = MONTHS[explicitDate[3]];
+    const year = Number(explicitDate[4]);
+    if (month === undefined) {
+      throw new Error(`Mois non reconnu dans la date « ${label} ».`);
+    }
+
+    const date = new Date(year, month, day);
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month ||
+      date.getDate() !== day ||
+      normalize(date.toLocaleDateString('fr-FR', { weekday: 'long' })) !== weekday
+    ) {
+      throw new Error(`Date de jour invalide : « ${label} ».`);
+    }
+    return toIsoDate(date);
+  }
+
   const match = label.match(/^(.+?)\s+(\d{1,2})$/);
   if (!match) {
     throw new Error(`Date de jour non reconnue : « ${label} ».`);

@@ -36,11 +36,16 @@ contenant les cinq feuilles attendues :
   émotionnelle, sommeil et commentaire.
 - **À lire** : période dans le titre, puis informations et conseils.
 
-L’import valide les feuilles, les en-têtes et les dates avant de remplacer les
-données du compte connecté. Les modifications réalisées dans l’application
-(suivi des repas, notes, courses achetées et suivi quotidien) sont synchronisées
-avec Supabase. Les erreurs de lecture, de chargement ou d’enregistrement sont
-affichées dans l’interface. Le fichier d’origine n’est jamais modifié.
+L’import valide les feuilles, les en-têtes et les dates avant de mettre à jour
+les données du compte connecté. Le suivi quotidien est fusionné par date :
+l’historique est conservé même si le nouveau classeur ne contient qu’une
+semaine, et les valeurs renseignées dans le classeur importé remplacent celles
+de la même date. Les champs laissés vides dans le fichier importé conservent
+leur valeur précédente. Les autres feuilles reflètent le classeur importé. Les
+modifications réalisées dans l’application (suivi des repas, notes, courses
+achetées et suivi quotidien) sont synchronisées avec Supabase. Les erreurs de
+lecture, de chargement ou d’enregistrement sont affichées dans l’interface. Le
+fichier d’origine n’est jamais modifié.
 
 Le classeur fourni sert à vérifier le format pris en charge. La structure reste
 isolée derrière une interface de stockage et son contenu est conservé tel quel
@@ -49,6 +54,9 @@ dans la base pour garder le format indépendant de l’interface.
 Le bouton **Télécharger Excel** génère un classeur `.xlsx` avec les cinq feuilles
 attendues par l’import. Les statuts, notes, pesées, habitudes quotidiennes et
 cases de courses sont repris depuis les données synchronisées du compte.
+La feuille **Suivi quotidien** exporte toutes les dates de l’historique ; les
+dates complètes permettent de réimporter aussi les entrées antérieures à la
+semaine affichée.
 
 ## Pages
 

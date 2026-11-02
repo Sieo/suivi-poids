@@ -32,6 +32,12 @@ describe('buildWorkbookSheets', () => {
       category: 'Conseils',
       content: 'Boire régulièrement.',
     });
+    data.dailyLogs.push({
+      ...data.dailyLogs[0],
+      id: 'historical-log',
+      loggedOn: '2024-01-01',
+      weightKg: 80.2,
+    });
 
     const sheets = buildWorkbookSheets(data);
     expect(sheets.map((sheet) => sheet.sheet)).toEqual([
@@ -51,7 +57,12 @@ describe('buildWorkbookSheets', () => {
       lunch: { status: 'not-respected' },
       notes: 'Repas décalé',
     });
-    expect(imported.dailyLogs[0]).toMatchObject({ weightKg: 72.4, waterGlasses: 7 });
+    expect(imported.dailyLogs.find((log) => log.loggedOn === '2024-01-01')).toMatchObject({
+      weightKg: 80.2,
+    });
+    expect(
+      imported.dailyLogs.find((log) => log.loggedOn === data.dailyLogs[0].loggedOn),
+    ).toMatchObject({ weightKg: 72.4, waterGlasses: 7 });
     expect(imported.shoppingItems[0]).toMatchObject({ name: 'Pommes', isPurchased: true });
     expect(imported.portionGuides[0]).toMatchObject({ food: 'Riz', portion: '60 g' });
     expect(imported.readingItems[0].content).toBe('Boire régulièrement.');
