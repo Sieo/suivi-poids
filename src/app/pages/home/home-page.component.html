@@ -1,0 +1,153 @@
+<div class="page-content home-page">
+  <header class="welcome-heading">
+    <div>
+      <p class="eyebrow">{{ today | date: 'EEEE d MMMM' | uppercase }}</p>
+      <h1>Bonjour, {{ displayName() }}</h1>
+      <p>Une nouvelle semaine pour prendre soin de vous.</p>
+    </div>
+    <div class="week-badge">
+      <small>SEMAINE</small><strong>{{ weekNumber }}</strong>
+    </div>
+  </header>
+
+  <section class="weight-highlight" aria-label="Mon évolution de poids">
+    <div class="weight-card-heading">
+      <span class="weight-icon" aria-hidden="true">⌁</span>
+      <div><small>MON ÉVOLUTION</small><strong>Poids actuel</strong></div>
+    </div>
+    <p class="weight-number">
+      @if (latestWeight() === null) {
+        <span>—</span>
+      } @else {
+        {{ latestWeight() | number: '1.1-1' }} <small>kg</small>
+      }
+    </p>
+    @if (weightChange() !== null) {
+      <p class="weight-change">
+        {{ weightChange()! < 0 ? '↓' : weightChange()! > 0 ? '↑' : '→' }}
+        {{ absoluteWeightChange() | number: '1.1-1' }} kg depuis le début
+      </p>
+    } @else {
+      <p class="weight-change">Votre évolution apparaîtra ici</p>
+    }
+    @if (weightSparkline()) {
+      <svg
+        class="weight-sparkline"
+        viewBox="0 0 100 38"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <polyline [attr.points]="weightSparkline()" />
+      </svg>
+    }
+    <a routerLink="/recapitulatif" class="weight-link">Voir mon évolution <span>↗</span></a>
+  </section>
+
+  <section class="today-menu" aria-labelledby="today-menu-title">
+    <header class="section-title-row">
+      <div>
+        <p class="section-kicker">AUJOURD’HUI</p>
+        <h2 id="today-menu-title">Au menu</h2>
+      </div>
+      <a routerLink="/planning-semaine">Voir le planning <span aria-hidden="true">›</span></a>
+    </header>
+
+    @if (todayPlan(); as plan) {
+      <div class="meal-cards" role="region" aria-label="Menus du jour à faire défiler" tabindex="0">
+        @for (period of periods; track period.key) {
+          <article class="meal-card">
+            <div class="meal-art" aria-hidden="true"></div>
+            <div class="meal-card-copy">
+              <span class="meal-tag">
+                {{
+                  plan[period.key].status === 'planned'
+                    ? 'Prévu'
+                    : plan[period.key].status === 'respected'
+                      ? 'Consommé'
+                      : plan[period.key].status === 'replaced'
+                        ? 'Remplacé'
+                        : 'Non respecté'
+                }}
+              </span>
+              <p>{{ period.label }} · {{ period.time }}</p>
+              <h3>{{ plan[period.key].description || 'Repas à renseigner' }}</h3>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="empty-state menu-empty">
+        <p>Aucun repas prévu pour aujourd’hui.</p>
+        <a routerLink="/planning-semaine">Consulter la semaine</a>
+      </div>
+    }
+  </section>
+
+  <section class="daily-balance">
+    <header class="section-title-row">
+      <div>
+        <p class="section-kicker">MON ÉQUILIBRE</p>
+        <h2>Suivi du jour</h2>
+      </div>
+      <a routerLink="/suivi-quotidien" aria-label="Compléter le suivi du jour"
+        >Compléter <span>›</span></a
+      >
+    </header>
+    <div class="balance-grid">
+      <article class="balance-card hydration-card">
+        <span class="balance-icon" aria-hidden="true">◌</span>
+        <div>
+          <small>Hydratation</small
+          ><strong>{{ todayLog()?.waterGlasses ?? '—' }} <i>/ 8 verres</i></strong>
+        </div>
+        <div
+          class="water-dots"
+          role="img"
+          [attr.aria-label]="(todayLog()?.waterGlasses ?? 0) + ' verre(s) d’eau sur 8'"
+        >
+          @for (glass of waterGlassMarkers; track $index) {
+            <span [class.filled]="$index < (todayLog()?.waterGlasses ?? 0)"></span>
+          }
+        </div>
+      </article>
+      <article class="balance-card activity-card">
+        <span class="balance-icon" aria-hidden="true">♧</span>
+        <div>
+          <small>Activité</small><strong>{{ todayLog()?.activity || 'À votre rythme' }}</strong>
+        </div>
+      </article>
+      <article class="balance-card sleep-card">
+        <span class="balance-icon" aria-hidden="true">☾</span>
+        <div>
+          <small>Sommeil</small
+          ><strong>{{
+            todayLog()?.sleepHours === null || todayLog()?.sleepHours === undefined
+              ? '—'
+              : (todayLog()?.sleepHours | number: '1.1-1') + ' h'
+          }}</strong>
+        </div>
+      </article>
+    </div>
+    <button class="weekly-card" type="button" routerLink="/recapitulatif">
+      <span class="weekly-icon" aria-hidden="true">⌁</span>
+      <span class="weekly-copy">
+        <small>Bilan hebdomadaire</small>
+        <strong>
+          {{
+            mealAdherence() === null
+              ? 'Votre suivi progresse à votre rythme'
+              : 'Votre rythme s’installe'
+          }}
+        </strong>
+        <em>
+          {{
+            mealAdherence() === null
+              ? 'Renseignez vos repas pour voir votre bilan.'
+              : mealAdherence() + '% du planning renseigné comme respecté'
+          }}
+        </em>
+      </span>
+      <span class="weekly-arrow" aria-hidden="true">›</span>
+    </button>
+  </section>
+</div>

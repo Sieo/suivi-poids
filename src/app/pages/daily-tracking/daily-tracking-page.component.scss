@@ -5,9 +5,9 @@
 }
 
 .daily-card {
-  background: white;
-  border: 1px solid #eeede7;
-  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #f0ede7;
+  border-radius: 18px;
   padding: 17px;
 }
 
@@ -26,8 +26,8 @@
 }
 
 .daily-card-heading h2 {
-  color: #3e4d3e;
-  font-family: Georgia, 'Times New Roman', serif;
+  color: #263a35;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   font-size: 17px;
   font-weight: 400;
   margin: 3px 0 0;
@@ -35,7 +35,7 @@
 }
 
 .gentle-reminder {
-  background: #f2f4ed;
+  background: #e9f1e8;
   border-radius: 15px;
   color: #7d8c76;
   font-size: 8px;
@@ -65,9 +65,9 @@
 
 .input-with-unit {
   align-items: center;
-  background: #fcfcf9;
-  border: 1px solid #eaeae2;
-  border-radius: 6px;
+  background: #fbfaf7;
+  border: 1px solid #eae6dd;
+  border-radius: 10px;
   display: flex;
   height: 34px;
   padding: 0 8px;
@@ -100,9 +100,9 @@
 .text-field input,
 .text-field select,
 .text-field textarea {
-  background: #fcfcf9;
-  border: 1px solid #eaeae2;
-  border-radius: 6px;
+  background: #fbfaf7;
+  border: 1px solid #eae6dd;
+  border-radius: 10px;
   color: #596153;
   font: inherit;
   font-size: 9px;

@@ -1,14 +1,19 @@
 <aside class="sidebar" aria-label="Navigation principale">
-  <a class="brand" href="#" aria-label="Tempo, accueil">
+  <a class="brand" routerLink="/" aria-label="Tempo, accueil">
     <span class="brand-mark" aria-hidden="true">t</span>
     <span>tempo<span class="brand-period">.</span></span>
   </a>
 
   <div class="sidebar-label">ESPACE PERSONNEL</div>
   <nav class="navigation">
-    <a class="nav-link" routerLink="/recapitulatif" routerLinkActive="active">
-      <span class="nav-icon" aria-hidden="true">▦</span>
-      Récapitulatif
+    <a
+      class="nav-link"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="nav-icon" aria-hidden="true">⌂</span>
+      Accueil
     </a>
     <a
       class="nav-link"
@@ -16,24 +21,50 @@
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      <span class="nav-icon" aria-hidden="true">⌂</span>
+      <span class="nav-icon" aria-hidden="true">▦</span>
       Planning semaine
     </a>
+    <a class="nav-link" routerLink="/liste-de-courses" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">♧</span>
+      Liste de courses
+    </a>
+    <a class="nav-link" routerLink="/recapitulatif" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">⌁</span>
+      Progrès
+    </a>
+    <a class="nav-link" routerLink="/profil" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">◯</span>
+      Profil
+    </a>
+  </nav>
+
+  <div class="sidebar-label resources-label">POUR ALLER PLUS LOIN</div>
+  <nav class="navigation resources-navigation" aria-label="Ressources">
     <a class="nav-link" routerLink="/reperes-portions" routerLinkActive="active">
       <span class="nav-icon" aria-hidden="true">◉</span>
       Repères portions
     </a>
-    <a class="nav-link" routerLink="/liste-de-courses" routerLinkActive="active">
-      <span class="nav-icon" aria-hidden="true">☷</span>
-      Liste de courses
-    </a>
-    <a class="nav-link" routerLink="/suivi-quotidien" routerLinkActive="active">
-      <span class="nav-icon" aria-hidden="true">♡</span>
-      Suivi quotidien
-    </a>
     <a class="nav-link" routerLink="/a-lire" routerLinkActive="active">
       <span class="nav-icon" aria-hidden="true">ⓘ</span>
       À lire
+    </a>
+  </nav>
+
+  <nav class="mobile-navigation" aria-label="Navigation principale">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v11h14V9M9 20v-6h6v6" /></svg></span><small>Accueil</small>
+    </a>
+    <a routerLink="/planning-semaine" routerLinkActive="active">
+      <span aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg></span><small>Planning</small>
+    </a>
+    <a routerLink="/liste-de-courses" routerLinkActive="active">
+      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 10 2-6M19 10l-2-6M3 10h18l-2 10H5L3 10ZM9 14v2M15 14v2" /></svg></span><small>Courses</small>
+    </a>
+    <a routerLink="/recapitulatif" routerLinkActive="active">
+      <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg></span><small>Progrès</small>
+    </a>
+    <a routerLink="/profil" routerLinkActive="active">
+      <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg></span><small>Profil</small>
     </a>
   </nav>
 

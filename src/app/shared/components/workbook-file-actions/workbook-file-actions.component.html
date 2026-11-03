@@ -1,0 +1,56 @@
+@if (variant() === 'profile') {
+  <div class="profile-actions">
+    <div class="profile-action">
+      <span class="action-icon import-icon" aria-hidden="true">↥</span>
+      <span class="action-copy"
+        ><strong>Importer un planning</strong><small>Ajouter un fichier Excel .xlsx</small></span
+      >
+      <label class="profile-import">
+        <input
+          type="file"
+          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="onFileSelected($event)"
+          [disabled]="importing() || !workbook.ready() || workbook.signingOut()"
+          aria-label="Importer un fichier Excel"
+        />
+        {{ importing() ? 'Import…' : 'Importer' }}
+      </label>
+    </div>
+    <button
+      class="profile-action profile-export"
+      type="button"
+      (click)="onExport()"
+      [disabled]="exporting() || !workbook.ready() || workbook.signingOut()"
+    >
+      <span class="action-icon export-icon" aria-hidden="true">↧</span>
+      <span class="action-copy"
+        ><strong>Exporter mon suivi</strong
+        ><small>Télécharger une copie de vos données</small></span
+      >
+      <span class="action-chevron" aria-hidden="true">›</span>
+    </button>
+  </div>
+} @else {
+  <div class="toolbar-actions">
+    <button
+      class="export-button"
+      type="button"
+      (click)="onExport()"
+      [disabled]="exporting() || !workbook.ready() || workbook.signingOut()"
+    >
+      <span aria-hidden="true">↧</span>
+      {{ exporting() ? 'Export en cours…' : 'Télécharger Excel' }}
+    </button>
+    <label class="import-button" [class.importing]="importing()">
+      <input
+        type="file"
+        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        (change)="onFileSelected($event)"
+        [disabled]="importing() || !workbook.ready() || workbook.signingOut()"
+        aria-label="Importer un fichier Excel"
+      />
+      <span aria-hidden="true">↥</span>
+      {{ importing() ? 'Import en cours…' : 'Importer un fichier .xlsx' }}
+    </label>
+  </div>
+}

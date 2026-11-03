@@ -92,6 +92,7 @@
                     <option value="planned">À renseigner</option>
                     <option value="respected">Respecté</option>
                     <option value="not-respected">Non respecté</option>
+                    <option value="replaced">Remplacé par</option>
                   </select>
                 </label>
               </article>
@@ -109,11 +110,11 @@
           }
 
           <label class="notes-field">
-            <span>Notes et écarts</span>
+            <span>Commentaire, notamment par quoi le repas a été remplacé</span>
             <textarea
               [value]="plan.notes"
               rows="2"
-              placeholder="Une remarque sur cette journée…"
+              placeholder="Une remarque sur cette journée ou le repas de remplacement…"
               (change)="updateNote(plan, $event)"
             ></textarea>
           </label>

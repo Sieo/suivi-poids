@@ -1,0 +1,156 @@
+:host {
+  display: block;
+}
+
+.toolbar-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.import-button,
+.export-button {
+  align-items: center;
+  border-radius: 9px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 650;
+  gap: 7px;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.import-button {
+  background: #ed795f;
+  border: 1px solid #ed795f;
+  color: #fff;
+  position: relative;
+}
+
+.export-button {
+  background: #f7e9e3;
+  border: 1px solid #f1ddd5;
+  color: #b95d4b;
+}
+
+.export-button:disabled,
+.profile-action:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.import-button:hover {
+  background: #dc6b54;
+}
+
+.import-button.importing {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.import-button input,
+.profile-import input {
+  cursor: pointer;
+  height: 100%;
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.import-button:focus-within,
+.profile-import:focus-within {
+  outline: 2px solid #68835d;
+  outline-offset: 3px;
+}
+
+.profile-actions {
+  background: #fff;
+  border: 1px solid #f0ede7;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.profile-action {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #34443d;
+  display: flex;
+  gap: 13px;
+  min-height: 75px;
+  padding: 13px 15px;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.profile-action + .profile-action {
+  border-top: 1px solid #eeeae2;
+}
+
+.action-icon {
+  align-items: center;
+  border-radius: 12px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 17px;
+  height: 37px;
+  justify-content: center;
+  width: 37px;
+}
+
+.import-icon {
+  background: #e6f0f2;
+  color: #5e929c;
+}
+
+.export-icon {
+  background: #eee9f5;
+  color: #7e6a9c;
+}
+
+.action-copy {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+}
+
+.action-copy strong {
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.action-copy small {
+  color: #8d968e;
+  font-size: 9px;
+}
+
+.profile-import {
+  background: #f7f5f0;
+  border-radius: 8px;
+  color: #6f7a72;
+  cursor: pointer;
+  font-size: 9px;
+  padding: 8px 10px;
+  position: relative;
+}
+
+.profile-export {
+  cursor: pointer;
+}
+
+.action-chevron {
+  color: #9aa39c;
+  font-size: 20px;
+}
+
+@media (max-width: 850px) {
+  .toolbar-actions {
+    display: none;
+  }
+}

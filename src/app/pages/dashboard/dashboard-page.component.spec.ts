@@ -37,7 +37,7 @@ describe('DashboardPageComponent', () => {
     fixture.detectChanges();
 
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelector('h1')?.textContent).toContain('Récapitulatif');
+    expect(element.querySelector('h1')?.textContent).toContain('Votre rythme');
     expect(element.querySelector('.weight-overview strong')?.textContent).toContain('79.0');
     expect(element.querySelector('.weight-overview .metric-detail')?.textContent).toContain(
       '−1.0 kg',

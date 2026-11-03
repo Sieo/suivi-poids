@@ -2,7 +2,13 @@ import { Routes } from '@angular/router';
 import { requireAuth, requireGuest } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'recapitulatif' },
+  {
+    path: '',
+    pathMatch: 'full',
+    canActivate: [requireAuth],
+    loadComponent: () =>
+      import('./pages/home/home-page.component').then((module) => module.HomePageComponent),
+  },
   {
     path: 'connexion',
     canActivate: [requireGuest],
@@ -55,6 +61,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/reading/reading-page.component').then(
         (module) => module.ReadingPageComponent,
+      ),
+  },
+  {
+    path: 'profil',
+    canActivate: [requireAuth],
+    loadComponent: () =>
+      import('./pages/profile/profile-page.component').then(
+        (module) => module.ProfilePageComponent,
       ),
   },
   { path: '**', redirectTo: 'planning-semaine' },

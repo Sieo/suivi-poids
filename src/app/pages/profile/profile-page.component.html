@@ -1,0 +1,115 @@
+<div class="page-content profile-page">
+  <header class="profile-heading">
+    <span class="profile-avatar" aria-hidden="true">
+      {{ displayName().slice(0, 1).toUpperCase() }}
+    </span>
+    <h1>{{ displayName() }}</h1>
+    <p>Votre espace personnel Tempo</p>
+  </header>
+
+  <section class="profile-section identity-section">
+    <p class="section-label">MON IDENTITÉ</p>
+    <div class="identity-card">
+      @if (editingName()) {
+        <form (ngSubmit)="saveName()">
+          <label for="profile-name">Nom affiché</label>
+          <input
+            id="profile-name"
+            type="text"
+            name="displayName"
+            autocomplete="name"
+            maxlength="60"
+            required
+            [ngModel]="nameDraft()"
+            (ngModelChange)="nameDraft.set($event)"
+            [disabled]="savingName()"
+          />
+          @if (nameError(); as error) {
+            <p class="name-message error-message" role="alert">{{ error }}</p>
+          }
+          <div class="identity-actions">
+            <button type="button" class="secondary-button" (click)="cancelNameEdit()">
+              Annuler
+            </button>
+            <button type="submit" class="primary-button" [disabled]="savingName()">
+              {{ savingName() ? 'Enregistrement…' : 'Enregistrer' }}
+            </button>
+          </div>
+        </form>
+      } @else {
+        <div class="identity-summary">
+          <span>
+            <strong>Nom affiché</strong>
+            <small>{{ displayName() }}</small>
+          </span>
+          <button type="button" class="secondary-button" (click)="beginNameEdit()">
+            Modifier
+          </button>
+        </div>
+        @if (nameNotice(); as notice) {
+          <p class="name-message success-message" role="status">{{ notice }}</p>
+        }
+      }
+    </div>
+  </section>
+
+  <section class="profile-section">
+    <p class="section-label">MES DONNÉES</p>
+    <div class="profile-links">
+      <a routerLink="/suivi-quotidien">
+        <span class="profile-link-icon coral-icon" aria-hidden="true">♧</span>
+        <span
+          ><strong>Suivi personnel</strong><small>Poids, faim, sommeil et commentaires</small></span
+        >
+        <span class="chevron" aria-hidden="true">›</span>
+      </a>
+      <a routerLink="/recapitulatif">
+        <span class="profile-link-icon green-icon" aria-hidden="true">▦</span>
+        <span
+          ><strong>Historique des semaines</strong
+          ><small>Consultez vos tendances et vos bilans</small></span
+        >
+        <span class="chevron" aria-hidden="true">›</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="profile-section">
+    <p class="section-label">FICHIERS &amp; SAUVEGARDE</p>
+    <app-workbook-file-actions variant="profile" />
+    <p class="backup-note">
+      @if (workbook.data().sourceFileName) {
+        Classeur actif : {{ workbook.data().sourceFileName }}
+      } @else {
+        Vos modifications sont synchronisées avec votre compte.
+      }
+    </p>
+  </section>
+
+  <section class="profile-section">
+    <p class="section-label">RESSOURCES</p>
+    <div class="profile-links">
+      <a routerLink="/reperes-portions">
+        <span class="profile-link-icon blue-icon" aria-hidden="true">◉</span>
+        <span
+          ><strong>Repères portions</strong><small>Retrouvez les quantités indicatives</small></span
+        >
+        <span class="chevron" aria-hidden="true">›</span>
+      </a>
+      <a routerLink="/a-lire">
+        <span class="profile-link-icon violet-icon" aria-hidden="true">ⓘ</span>
+        <span><strong>À lire</strong><small>Conseils et repères utiles</small></span>
+        <span class="chevron" aria-hidden="true">›</span>
+      </a>
+    </div>
+  </section>
+
+  <button
+    class="sign-out-button"
+    type="button"
+    (click)="onSignOut()"
+    [disabled]="signingOut() || workbook.signingOut()"
+  >
+    {{ signingOut() ? 'Déconnexion…' : 'Se déconnecter' }}
+  </button>
+</div>

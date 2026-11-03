@@ -73,6 +73,19 @@ export class AuthService {
     this.user.set(null);
   }
 
+  async updateDisplayName(name: string): Promise<void> {
+    this.error.set(null);
+    const client = await this.client;
+    const { data, error } = await client.auth.updateUser({
+      data: { full_name: name },
+    });
+    if (error) {
+      this.error.set(error.message);
+      throw error;
+    }
+    this.user.set(data.user);
+  }
+
   private errorMessage(error: unknown): string {
     return error instanceof Error
       ? error.message

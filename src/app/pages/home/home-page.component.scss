@@ -1,0 +1,321 @@
+.welcome-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0 25px;
+}
+
+.welcome-heading .eyebrow,
+.section-kicker {
+  color: #e66f57;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.3px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.welcome-heading h1,
+.section-title-row h2 {
+  color: #263a35;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+}
+
+.welcome-heading h1 {
+  font-size: clamp(29px, 3.3vw, 39px);
+  letter-spacing: -0.8px;
+  margin: 8px 0 6px;
+}
+
+.welcome-heading > div > p:last-child {
+  color: #738078;
+  font-size: 11px;
+  margin: 0;
+}
+
+.week-badge {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #f0ede7;
+  border-radius: 17px;
+  color: #263a35;
+  display: flex;
+  flex-direction: column;
+  min-width: 76px;
+  padding: 11px;
+}
+
+.week-badge strong {
+  font:
+    600 22px 'Playfair Display',
+    'Times New Roman',
+    serif;
+  margin-top: 2px;
+}
+
+.weight-highlight {
+  background: #253631;
+  border-radius: 22px;
+  box-shadow: 0 15px 32px rgba(37, 54, 49, 0.1);
+  color: #fff;
+  min-height: 235px;
+  overflow: hidden;
+  padding: 22px 24px;
+  position: relative;
+}
+
+.weight-card-heading {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.weight-icon {
+  align-items: center;
+  background: #f9e3dc;
+  border-radius: 10px;
+  color: #e66f57;
+  display: inline-flex;
+  font-size: 19px;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.weight-card-heading div,
+.balance-card div {
+  display: grid;
+  gap: 4px;
+}
+
+.weight-card-heading small {
+  color: #d7dfd8;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.weight-card-heading strong {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.weight-number {
+  font:
+    600 clamp(35px, 5vw, 46px)/1 'Playfair Display',
+    'Times New Roman',
+    serif;
+  letter-spacing: -1px;
+  margin: 22px 0 3px;
+}
+
+.weight-number small {
+  font:
+    500 13px Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+}
+
+.weight-change {
+  color: #a7d0a6;
+  font-size: 10px;
+  margin: 0;
+}
+
+.weight-sparkline {
+  height: 57px;
+  margin-top: 11px;
+  overflow: visible;
+  width: 100%;
+}
+
+.weight-sparkline polyline {
+  fill: none;
+  stroke: #ed795f;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+}
+
+.section-title-row {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.section-title-row h2 {
+  font-size: 23px;
+  letter-spacing: -0.3px;
+  margin: 5px 0 0;
+}
+
+.today-menu,
+.daily-balance {
+  margin-top: 30px;
+}
+
+.meal-card,
+.balance-card {
+  background: #fff;
+  border: 1px solid #f0ede7;
+  border-radius: 17px;
+  min-width: 0;
+}
+
+.meal-card {
+  overflow: hidden;
+}
+
+.meal-art {
+  align-items: center;
+  background: repeating-linear-gradient(128deg, #f3c1a8 0 58px, #f6ccb8 58px 116px);
+  display: flex;
+  height: 134px;
+  justify-content: center;
+}
+
+.meal-card-copy {
+  padding: 12px 14px 15px;
+}
+
+.meal-card-copy h3 {
+  color: #263a35;
+  font:
+    600 16px/1.3 'Playfair Display',
+    serif;
+  margin: 0;
+}
+
+.balance-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.balance-card {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+}
+
+.hydration-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+}
+
+.hydration-card > .water-dots {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 5px;
+}
+
+.hydration-card > .water-dots span {
+  background: #e5f0f3;
+  border: 1px solid #a9c8d1;
+  border-radius: 4px;
+  flex: 0 0 8px;
+  height: 13px;
+}
+
+.hydration-card > .water-dots span.filled {
+  background: #6e9fb0;
+  border-color: #6e9fb0;
+}
+
+.balance-icon {
+  align-items: center;
+  background: #e7f0f2;
+  border-radius: 10px;
+  color: #6d9fac;
+  display: flex;
+  flex: 0 0 auto;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.balance-card small {
+  color: #87918a;
+  font-size: 9px;
+}
+
+.balance-card strong {
+  color: #263a35;
+  font:
+    600 15px 'Playfair Display',
+    'Times New Roman',
+    serif;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .welcome-heading {
+    margin-bottom: 20px;
+  }
+
+  .welcome-heading h1 {
+    font-size: 29px;
+  }
+
+  .welcome-heading > div > p:last-child {
+    font-size: 10px;
+    max-width: 220px;
+  }
+
+  .week-badge {
+    min-width: 63px;
+    padding: 9px 10px;
+  }
+
+  .weight-highlight {
+    border-radius: 19px;
+    min-height: 228px;
+    padding: 19px;
+  }
+
+  .weight-sparkline {
+    height: 52px;
+  }
+
+  .meal-art {
+    height: 115px;
+  }
+
+  .meal-card-copy {
+    padding: 10px 11px 13px;
+  }
+
+  .today-menu,
+  .daily-balance {
+    margin-top: 24px;
+  }
+
+  .section-title-row h2 {
+    font-size: 21px;
+  }
+
+  .section-title-row > a {
+    font-size: 9px;
+  }
+
+  .balance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .balance-card {
+    padding: 12px;
+  }
+
+  .hydration-card {
+    grid-column: 1 / -1;
+  }
+}

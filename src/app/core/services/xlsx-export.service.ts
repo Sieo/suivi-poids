@@ -22,7 +22,13 @@ const fullDateLabel = (isoDate: string): string => {
 };
 
 const mealStatusCell = (status: MealStatus): string =>
-  status === 'respected' ? '☑' : status === 'not-respected' ? '☐' : '';
+  status === 'respected'
+    ? '☑'
+    : status === 'not-respected'
+      ? '☐'
+      : status === 'replaced'
+        ? 'Remplacé'
+        : '';
 
 const readingTitle = (data: WorkbookData): string => {
   if (/semaine\s+du\s+/iu.test(data.week.title)) {
@@ -165,7 +171,11 @@ export class XlsxExportService {
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = `tempo-${data.week.startsOn}.xlsx`;
+    document.body.appendChild(anchor);
     anchor.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    window.setTimeout(() => {
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }, 60_000);
   }
 }

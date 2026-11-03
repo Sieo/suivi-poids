@@ -1,7 +1,9 @@
 <header class="topbar">
-  <div class="breadcrumb">
-    <span>Tempo</span><span aria-hidden="true">/</span><strong>Mon suivi alimentaire</strong>
-  </div>
+  <a class="brand" routerLink="/" aria-label="Tempo, accueil">
+    <span class="brand-mark" aria-hidden="true">t</span>
+    <span>tempo<span class="brand-period">.</span></span>
+  </a>
+  <span class="page-title">{{ pageTitle() }}</span>
   <div class="topbar-actions">
     @if (workbook.data().sourceFileName) {
       <span class="source-name" [title]="workbook.data().sourceFileName!">
@@ -11,25 +13,7 @@
     } @else {
       <span class="source-name"><span class="sync-dot"></span> Aucun classeur importé</span>
     }
-    <button
-      class="export-button"
-      type="button"
-      (click)="onExport()"
-      [disabled]="exporting() || !workbook.ready() || workbook.signingOut()"
-    >
-      <span aria-hidden="true">↧</span>
-      {{ exporting() ? 'Export en cours…' : 'Télécharger Excel' }}
-    </button>
-    <label class="import-button" [class.importing]="importing()">
-      <input
-        type="file"
-        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        (change)="onFileSelected($event)"
-        [disabled]="importing() || !workbook.ready() || workbook.signingOut()"
-      />
-      <span aria-hidden="true">↥</span>
-      {{ importing() ? 'Import en cours…' : 'Importer un fichier .xlsx' }}
-    </label>
+    <app-workbook-file-actions />
     <button
       class="sign-out-button"
       type="button"
@@ -39,6 +23,13 @@
       {{ signingOut() ? 'Déconnexion…' : 'Déconnexion' }}
     </button>
   </div>
+  <a class="mobile-profile" routerLink="/profil" [attr.aria-label]="'Profil de ' + (auth.user()?.email ?? 'mon compte')">
+    {{
+      auth.user()?.user_metadata?.['full_name']?.slice(0, 1)?.toUpperCase()
+        ?? auth.user()?.email?.slice(0, 1)?.toUpperCase()
+        ?? 'P'
+    }}
+  </a>
 </header>
 
 @if (workbook.error(); as error) {

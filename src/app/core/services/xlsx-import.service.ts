@@ -89,6 +89,9 @@ const requiredColumn = (headers: HeaderMap, title: string, sheetName: string): n
 
 const statusFromCell = (value: CellValue | undefined): MealStatus => {
   const raw = cellText(value);
+  if (['remplace', 'remplace par', 'replaced'].includes(normalize(raw))) {
+    return 'replaced';
+  }
   if (['☑', '✓', '✔'].includes(raw)) {
     return 'respected';
   }

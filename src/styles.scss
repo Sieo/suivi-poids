@@ -1,16 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --ink: #24312d;
+  --ink-soft: #64706b;
+  --cream: #f7f5ef;
+  --paper: #fff;
+  --line: #e7e7df;
+  --coral: #e8785f;
+  --coral-dark: #c95943;
+  --coral-soft: #fae8e1;
+  --sage: #769b78;
+  --sage-soft: #e8f0e5;
+  --blue: #6e9fb0;
+  --blue-soft: #e5f0f3;
+  --lavender: #8b83a9;
+  --lavender-soft: #eeebf5;
+}
+
 * {
   box-sizing: border-box;
 }
 
 html {
-  background: #fff;
+  background: #e8e8e2;
   color-scheme: light;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+  font-family: 'DM Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,14 +32,16 @@ html {
 }
 
 body {
-  background: #fff;
+  background: #e8e8e2;
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
 }
 
 button,
-select {
+select,
+input,
+textarea {
   font: inherit;
 }
 
@@ -38,8 +54,8 @@ a:focus-visible {
 
 .page-content {
   margin: 0 auto;
-  max-width: 1330px;
-  padding: 32px clamp(22px, 4vw, 58px) 42px;
+  max-width: 1120px;
+  padding: 34px clamp(22px, 4vw, 48px) 48px;
 }
 
 .page-heading {
@@ -47,7 +63,7 @@ a:focus-visible {
 }
 
 .page-heading .eyebrow {
-  color: #87916f;
+  color: var(--coral);
   font-size: 9px;
   font-weight: 750;
   letter-spacing: 1.2px;
@@ -55,8 +71,8 @@ a:focus-visible {
 }
 
 .page-heading h1 {
-  color: #2e4637;
-  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--ink);
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   font-size: clamp(26px, 3vw, 36px);
   font-weight: 400;
   letter-spacing: -0.5px;
@@ -64,17 +80,17 @@ a:focus-visible {
 }
 
 .page-heading > p:last-child {
-  color: #858a7e;
+  color: var(--ink-soft);
   font-size: 10px;
   line-height: 1.6;
   margin: 0;
 }
 
 .empty-state {
-  background: white;
-  border: 1px dashed #dfe3d8;
-  border-radius: 11px;
-  color: #8d9484;
+  background: var(--paper);
+  border: 1px dashed #e6e1d7;
+  border-radius: 18px;
+  color: #7e8880;
   margin-top: 20px;
   padding: 28px 20px;
   text-align: center;
@@ -86,8 +102,8 @@ a:focus-visible {
 }
 
 .empty-state h3 {
-  color: #425343;
-  font-family: Georgia, 'Times New Roman', serif;
+  color: #263a35;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   font-size: 18px;
   font-weight: 400;
   margin: 10px 0 5px;
@@ -99,13 +115,157 @@ a:focus-visible {
 }
 
 .week-range {
-  color: #596850;
+  color: #5f6c63;
   font-size: 11px;
   font-weight: 650;
 }
 
+.home-page .section-title-row > a,
+.home-page .menu-empty a {
+  color: var(--coral);
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-page .meal-tag {
+  background: var(--coral-soft);
+  border-radius: 20px;
+  color: var(--coral-dark);
+  display: inline-block;
+  font-size: 8px;
+  padding: 5px 8px;
+}
+
+.home-page .meal-cards {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding-bottom: 8px;
+  scroll-padding-inline: 2px;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: #e6b2a5 transparent;
+  scrollbar-width: thin;
+}
+
+.home-page .meal-card {
+  flex: 0 0 36%;
+  scroll-snap-align: start;
+}
+
+.home-page .meal-card-copy p {
+  color: var(--ink-soft);
+  font-size: 9px;
+  margin: 11px 0 5px;
+}
+
+.home-page .weekly-card {
+  align-items: center;
+  background: #f4e3d6;
+  border: 0;
+  border-radius: 16px;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px;
+  text-align: left;
+  width: 100%;
+}
+
+.home-page .weekly-icon {
+  align-items: center;
+  background: var(--paper);
+  border-radius: 11px;
+  color: var(--coral);
+  display: flex;
+  flex: 0 0 auto;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.home-page .weekly-copy {
+  display: grid;
+  flex: 1;
+  gap: 3px;
+}
+
+.home-page .weekly-copy small {
+  color: var(--coral-dark);
+  font-size: 8px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.home-page .weekly-copy strong {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.home-page .weekly-copy em {
+  color: var(--ink-soft);
+  font-size: 9px;
+  font-style: normal;
+}
+
+.home-page .weekly-arrow {
+  color: var(--ink-soft);
+  font-size: 22px;
+}
+
+.home-page .weight-link {
+  bottom: 20px;
+  color: #f5b5a3;
+  font-size: 9px;
+  position: absolute;
+  right: 24px;
+  text-decoration: none;
+}
+
+.home-page .meal-art::after {
+  background:
+    radial-gradient(ellipse at 39% 31%, #ed8068 0 17%, transparent 18%),
+    radial-gradient(ellipse at 34% 67%, #86a878 0 15%, transparent 16%),
+    radial-gradient(ellipse at 69% 67%, #d8c17d 0 14%, transparent 15%), #f6f1e4;
+  border: 6px solid #e8dfce;
+  border-radius: 50%;
+  box-shadow: 0 6px 12px rgba(99, 72, 53, 0.12);
+  content: '';
+  height: 80px;
+  transform: rotate(-12deg);
+  width: 80px;
+}
+
 @media (max-width: 560px) {
+  .home-page .meal-cards {
+    gap: 11px;
+    margin-right: -18px;
+    padding-right: 18px;
+  }
+
+  .home-page .meal-card {
+    flex-basis: 78%;
+  }
+
   .page-content {
-    padding: 20px 15px 32px;
+    padding: 23px 18px 112px;
+  }
+
+  .page-heading h1 {
+    font-size: clamp(29px, 8vw, 36px);
+  }
+
+  .page-heading > p:last-child {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 850px) {
+  .home-page .meal-card {
+    flex-basis: 42%;
   }
 }

@@ -62,11 +62,13 @@ export class DashboardPageComponent {
     const respected = statuses.filter((meal) => meal.status === 'respected').length;
     const notRespected = statuses.filter((meal) => meal.status === 'not-respected').length;
     const planned = statuses.filter((meal) => meal.status === 'planned').length;
+    const replaced = statuses.filter((meal) => meal.status === 'replaced').length;
     const recorded = respected + notRespected;
     return {
       respected,
       notRespected,
       planned,
+      replaced,
       recorded,
       adherence: recorded ? (respected / recorded) * 100 : null,
     };
@@ -135,8 +137,8 @@ export class DashboardPageComponent {
             : `${meals.adherence.toFixed(0)} % respectés`,
         detail:
           meals.recorded === 0
-            ? 'Les repas saisis comme respectés ou non respectés apparaîtront ici.'
-            : `${meals.respected} respecté(s), ${meals.notRespected} non respecté(s) et ${meals.planned} à renseigner.`,
+            ? `${meals.replaced} repas remplacé(s) et ${meals.planned} à renseigner.`
+            : `${meals.respected} respecté(s), ${meals.notRespected} non respecté(s), ${meals.replaced} remplacé(s) et ${meals.planned} à renseigner.`,
         tone:
           meals.adherence === null ? 'neutral' : meals.adherence >= 75 ? 'positive' : 'attention',
       },

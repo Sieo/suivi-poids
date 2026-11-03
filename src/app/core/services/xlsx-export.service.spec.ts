@@ -8,7 +8,8 @@ describe('buildWorkbookSheets', () => {
     const plan = data.mealPlans[0];
     plan.breakfast.status = 'respected';
     plan.lunch.status = 'not-respected';
-    plan.notes = 'Repas décalé';
+    plan.dinner.status = 'replaced';
+    plan.notes = 'Dîner remplacé par une salade.';
     data.dailyLogs[0].weightKg = 72.4;
     data.dailyLogs[0].waterGlasses = 7;
     data.shoppingItems.push({
@@ -55,7 +56,8 @@ describe('buildWorkbookSheets', () => {
     expect(imported.mealPlans[0]).toMatchObject({
       breakfast: { status: 'respected' },
       lunch: { status: 'not-respected' },
-      notes: 'Repas décalé',
+      dinner: { status: 'replaced' },
+      notes: 'Dîner remplacé par une salade.',
     });
     expect(imported.dailyLogs.find((log) => log.loggedOn === '2024-01-01')).toMatchObject({
       weightKg: 80.2,

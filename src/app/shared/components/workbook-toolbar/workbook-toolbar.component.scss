@@ -4,25 +4,63 @@
 
 .topbar {
   align-items: center;
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid #efeee8;
+  background: rgba(247, 245, 239, 0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(35, 49, 45, 0.07);
   display: flex;
-  height: 66px;
+  height: 82px;
   justify-content: space-between;
-  padding: 0 clamp(22px, 4vw, 58px);
+  padding: 0 5%;
+  position: sticky;
+  top: 0;
+  z-index: 15;
 }
 
-.breadcrumb {
+.brand {
   align-items: center;
-  color: #9a9c92;
+  color: var(--ink);
   display: flex;
-  font-size: 11px;
-  gap: 11px;
+  font-size: 20px;
+  font-weight: 700;
+  gap: 9px;
+  letter-spacing: -1.4px;
+  text-decoration: none;
 }
 
-.breadcrumb strong {
-  color: #4a5149;
-  font-weight: 650;
+.brand-period {
+  color: var(--coral);
+}
+
+.page-title {
+  color: var(--ink-soft);
+  font-size: 11px;
+  margin-left: 18px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.page-title::before {
+  background: rgba(35, 49, 45, 0.14);
+  content: '';
+  height: 18px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+}
+
+.brand-mark {
+  align-items: center;
+  background: #315d43;
+  border-radius: 12px 12px 12px 4px;
+  color: #fffdf6;
+  display: flex;
+  font-size: 13px;
+  height: 30px;
+  justify-content: center;
+  transform: rotate(-8deg);
+  width: 30px;
 }
 
 .topbar-actions {
@@ -34,7 +72,7 @@
 
 .source-name {
   align-items: center;
-  color: #858a7e;
+  color: var(--ink-soft);
   display: inline-flex;
   font-size: 10px;
   gap: 7px;
@@ -45,79 +83,17 @@
 }
 
 .sync-dot {
-  background: #a9b980;
+  background: var(--sage);
   border-radius: 50%;
   flex: 0 0 auto;
   height: 6px;
   width: 6px;
 }
 
-.import-button {
-  align-items: center;
-  background: #315d43;
-  border: 1px solid #315d43;
-  border-radius: 7px;
-  color: white;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 10px;
-  font-weight: 650;
-  gap: 7px;
-  justify-content: center;
-  min-height: 34px;
-  padding: 0 12px;
-  transition: background 150ms ease;
-  white-space: nowrap;
-}
-
-.export-button {
-  align-items: center;
-  background: #f3f5ef;
-  border: 1px solid #dfe5da;
-  border-radius: 7px;
-  color: #315d43;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 10px;
-  font-weight: 650;
-  gap: 7px;
-  justify-content: center;
-  min-height: 34px;
-  padding: 0 11px;
-  white-space: nowrap;
-}
-
-.export-button:disabled {
-  cursor: progress;
-  opacity: 0.65;
-}
-
-.import-button:hover {
-  background: #264b35;
-}
-
-.import-button.importing {
-  cursor: progress;
-  opacity: 0.75;
-}
-
-.import-button input {
-  height: 1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  width: 1px;
-}
-
-.import-button:focus-within {
-  outline: 2px solid #68835d;
-  outline-offset: 3px;
-}
-
 .sign-out-button {
   background: transparent;
   border: 0;
-  color: #596850;
+  color: var(--ink-soft);
   cursor: pointer;
   font-size: 10px;
   padding: 6px;
@@ -127,6 +103,20 @@
 .sign-out-button:disabled {
   cursor: progress;
   opacity: 0.65;
+}
+
+.mobile-profile {
+  align-items: center;
+  background: var(--ink);
+  border-radius: 50%;
+  color: #fff;
+  display: none;
+  flex: 0 0 auto;
+  font-size: 13px;
+  height: 36px;
+  justify-content: center;
+  text-decoration: none;
+  width: 36px;
 }
 
 .feedback.error > button:not([aria-label]) {
@@ -170,53 +160,34 @@
 
 @media (max-width: 850px) {
   .topbar {
-    height: 55px;
-    padding: 0 18px;
+    height: 70px;
+    padding: 0 20px;
   }
 
   .source-name {
     display: none;
   }
 
-  .topbar-actions {
-    gap: 4px;
+  .page-title {
+    display: none;
   }
 
-  .sign-out-button {
-    font-size: 9px;
-    padding: 5px 2px;
+  .topbar-actions {
+    display: none;
+  }
+
+  .mobile-profile {
+    display: inline-flex;
   }
 }
 
 @media (max-width: 560px) {
   .topbar {
-    height: 52px;
-    padding: 0 14px;
+    height: 70px;
+    padding: 0 20px;
   }
 
-  .breadcrumb {
-    font-size: 9px;
-    gap: 7px;
-  }
-
-  .import-button {
-    font-size: 9px;
-    min-height: 32px;
-    padding: 0 8px;
-  }
-
-  .export-button {
-    font-size: 0;
-    gap: 0;
-    min-height: 32px;
-    padding: 0 9px;
-  }
-
-  .export-button span {
-    font-size: 15px;
-  }
-
-  .sign-out-button {
-    font-size: 8px;
+  .brand {
+    font-size: 20px;
   }
 }

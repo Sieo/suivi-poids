@@ -55,6 +55,32 @@ describe('MealPlanningPageComponent', () => {
     ).toBe('respected');
   });
 
+  it('should save a replacement status and its description in the day comment', async () => {
+    const fixture = TestBed.createComponent(MealPlanningPageComponent);
+    fixture.detectChanges();
+
+    const statusSelect = fixture.nativeElement.querySelector(
+      '[aria-label="Suivi : Déjeuner"]',
+    ) as HTMLSelectElement;
+    statusSelect.value = 'replaced';
+    statusSelect.dispatchEvent(new Event('change'));
+
+    const notes = fixture.nativeElement.querySelector(
+      '.notes-field textarea',
+    ) as HTMLTextAreaElement;
+    notes.value = 'Remplacé par une salade.';
+    notes.dispatchEvent(new Event('change'));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(
+      (savedData as { mealPlans: Array<{ lunch: { status: string }; notes: string }> })
+        .mealPlans[0],
+    ).toMatchObject({
+      lunch: { status: 'replaced' },
+      notes: 'Remplacé par une salade.',
+    });
+  });
+
   it('should save notes for the selected day', async () => {
     const fixture = TestBed.createComponent(MealPlanningPageComponent);
     fixture.detectChanges();

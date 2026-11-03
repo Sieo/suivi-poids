@@ -1,0 +1,255 @@
+.profile-heading {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0 30px;
+  text-align: center;
+}
+
+.profile-avatar {
+  align-items: center;
+  background: #263a35;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 3px 14px rgba(38, 58, 53, 0.12);
+  color: #fff;
+  display: flex;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  height: 68px;
+  justify-content: center;
+  width: 68px;
+}
+
+.profile-heading h1 {
+  color: #263a35;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin: 10px 0 4px;
+  overflow-wrap: anywhere;
+}
+
+.profile-heading p {
+  color: #859087;
+  font-size: 10px;
+  margin: 0;
+}
+
+.profile-section {
+  margin: 0 auto 22px;
+  max-width: 680px;
+}
+
+.identity-card {
+  background: #fff;
+  border: 1px solid #f0ede7;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.identity-card form {
+  display: grid;
+  gap: 9px;
+}
+
+.identity-card label,
+.identity-summary strong {
+  color: #34443d;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.identity-card input {
+  background: #fcfbf8;
+  border: 1px solid #e8e4dc;
+  border-radius: 9px;
+  color: #34443d;
+  font: inherit;
+  font-size: 12px;
+  min-height: 40px;
+  padding: 9px 11px;
+  width: 100%;
+}
+
+.identity-summary,
+.identity-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.identity-summary > span {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.identity-summary small {
+  color: #89938b;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.identity-actions {
+  justify-content: flex-end;
+  margin-top: 3px;
+}
+
+.secondary-button,
+.primary-button {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 650;
+  min-height: 34px;
+  padding: 0 12px;
+}
+
+.secondary-button {
+  background: #f5f3ed;
+  color: #65736b;
+}
+
+.primary-button {
+  background: #e8785f;
+  color: #fff;
+}
+
+.primary-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.name-message {
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 2px 0 0;
+}
+
+.error-message {
+  color: #a44e41;
+}
+
+.success-message {
+  color: #567b53;
+}
+
+.section-label {
+  color: #e66f57;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.2px;
+  margin: 0 0 10px 3px;
+}
+
+.profile-links {
+  background: #fff;
+  border: 1px solid #f0ede7;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.profile-links a {
+  align-items: center;
+  color: #34443d;
+  display: flex;
+  gap: 12px;
+  min-height: 66px;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.profile-links a + a {
+  border-top: 1px solid #eeeae2;
+}
+
+.profile-link-icon {
+  align-items: center;
+  border-radius: 11px;
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 16px;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.coral-icon {
+  background: #fae8e1;
+  color: #e66f57;
+}
+
+.green-icon {
+  background: #eaf1e8;
+  color: #6f9572;
+}
+
+.blue-icon {
+  background: #e6f0f2;
+  color: #6899a2;
+}
+
+.violet-icon {
+  background: #eee9f5;
+  color: #83709d;
+}
+
+.profile-links a > span:nth-child(2) {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+}
+
+.profile-links strong {
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.profile-links small {
+  color: #89938b;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.chevron {
+  color: #a0a9a2;
+  font-size: 21px;
+}
+
+.backup-note {
+  color: #89938b;
+  font-size: 9px;
+  line-height: 1.5;
+  margin: 8px 4px 0;
+  overflow-wrap: anywhere;
+}
+
+.sign-out-button {
+  background: #fff;
+  border: 1px solid #efeae3;
+  border-radius: 12px;
+  color: #9c6257;
+  cursor: pointer;
+  display: block;
+  font-size: 10px;
+  margin: 26px auto 0;
+  min-height: 40px;
+  max-width: 680px;
+  width: 100%;
+}
+
+.sign-out-button:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+@media (max-width: 560px) {
+  .profile-heading {
+    margin-top: 0;
+  }
+}
