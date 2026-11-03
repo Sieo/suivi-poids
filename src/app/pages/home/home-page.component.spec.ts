@@ -55,4 +55,25 @@ describe('HomePageComponent', () => {
     expect(element.querySelectorAll('.water-dots span')).toHaveLength(8);
     expect(element.querySelector('.weight-highlight')).not.toBeNull();
   });
+
+  it('marks consumed meals and adds a glass of water when its card is clicked', async () => {
+    const workbook = TestBed.inject(WorkbookDataService);
+    const today = new Date();
+    const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const todayPlan = workbook.data().mealPlans.find((plan) => plan.plannedOn === todayIso);
+    expect(todayPlan).toBeDefined();
+    workbook.updateMealStatus(todayPlan!.id, 'breakfast', 'respected');
+
+    const fixture = TestBed.createComponent(HomePageComponent);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('.meal-card')?.classList).toContain('meal-consumed');
+    (element.querySelector('.hydration-card') as HTMLButtonElement).click();
+
+    expect(workbook.data().dailyLogs.find((log) => log.loggedOn === todayIso)?.waterGlasses).toBe(
+      1,
+    );
+  });
 });

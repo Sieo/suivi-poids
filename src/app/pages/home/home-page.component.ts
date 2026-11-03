@@ -91,6 +91,9 @@ export class HomePageComponent {
     { key: 'dinner', label: 'Dîner', time: '19:30' },
   ] as const;
   protected readonly waterGlassMarkers = Array.from({ length: 8 });
+  protected addWaterGlass(): void {
+    this.workbook.addWaterGlass(todayIsoDate());
+  }
   protected readonly mealAdherence = computed(() => {
     const meals = this.workbook.data().mealPlans.flatMap((plan) => [
       plan.breakfast,

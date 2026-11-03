@@ -55,10 +55,16 @@
     @if (todayPlan(); as plan) {
       <div class="meal-cards" role="region" aria-label="Menus du jour à faire défiler" tabindex="0">
         @for (period of periods; track period.key) {
-          <article class="meal-card">
+          <article
+            class="meal-card"
+            [class.meal-consumed]="plan[period.key].status === 'respected'"
+          >
             <div class="meal-art" aria-hidden="true"></div>
             <div class="meal-card-copy">
-              <span class="meal-tag">
+              <span
+                class="meal-tag"
+                [class.meal-consumed-tag]="plan[period.key].status === 'respected'"
+              >
                 {{
                   plan[period.key].status === 'planned'
                     ? 'Prévu'
@@ -94,7 +100,15 @@
       >
     </header>
     <div class="balance-grid">
-      <article class="balance-card hydration-card">
+      <button
+        class="balance-card hydration-card"
+        type="button"
+        [attr.aria-label]="
+          'Ajouter un verre d’eau (' + (todayLog()?.waterGlasses ?? 0) + ' enregistrés)'
+        "
+        [disabled]="(todayLog()?.waterGlasses ?? 0) >= 100"
+        (click)="addWaterGlass()"
+      >
         <span class="balance-icon" aria-hidden="true">◌</span>
         <div>
           <small>Hydratation</small
@@ -109,7 +123,7 @@
             <span [class.filled]="$index < (todayLog()?.waterGlasses ?? 0)"></span>
           }
         </div>
-      </article>
+      </button>
       <article class="balance-card activity-card">
         <span class="balance-icon" aria-hidden="true">♧</span>
         <div>

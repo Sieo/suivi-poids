@@ -198,6 +198,49 @@ export class WorkbookDataService {
     }));
   }
 
+  addWaterGlass(loggedOn: string): void {
+    const currentLog = this.data().dailyLogs.find((log) => log.loggedOn === loggedOn);
+    if ((currentLog?.waterGlasses ?? 0) >= 100) {
+      return;
+    }
+
+    this.update((data) => {
+      const log = data.dailyLogs.find((entry) => entry.loggedOn === loggedOn);
+      if (log) {
+        return {
+          ...data,
+          dailyLogs: data.dailyLogs.map((entry) =>
+            entry.id === log.id ? { ...entry, waterGlasses: (entry.waterGlasses ?? 0) + 1 } : entry,
+          ),
+        };
+      }
+
+      const profileId = this.loadedUserId;
+      if (!profileId) {
+        return data;
+      }
+
+      const newLog: DailyLog = {
+        id: `daily-${profileId}-${loggedOn}`,
+        profileId,
+        loggedOn,
+        weightKg: null,
+        hungerLevel: null,
+        waterGlasses: 1,
+        activity: '',
+        mealsFollowed: '',
+        emotionalHunger: null,
+        sleepHours: null,
+        notes: null,
+      };
+
+      return {
+        ...data,
+        dailyLogs: [...data.dailyLogs, newLog].sort((a, b) => a.loggedOn.localeCompare(b.loggedOn)),
+      };
+    });
+  }
+
   private update(updater: (data: WorkbookData) => WorkbookData): void {
     void this.commit(updater(this.data()));
   }

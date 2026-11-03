@@ -118,6 +118,35 @@ describe('WorkbookDataService', () => {
     );
   });
 
+  it('creates a daily log when adding water for a date without one', async () => {
+    const data = createDemoWorkbookData();
+    data.dailyLogs = [];
+    const save = vi.fn(async () => undefined);
+    await TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: WORKBOOK_STORAGE,
+          useValue: { load: async () => data, save },
+        },
+      ],
+    }).compileComponents();
+
+    const workbook = TestBed.inject(WorkbookDataService);
+    await workbook.loadForUser('test-user');
+    workbook.addWaterGlass('2026-02-01');
+    workbook.addWaterGlass('2026-02-01');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(workbook.data().dailyLogs).toEqual([
+      expect.objectContaining({
+        profileId: 'test-user',
+        loggedOn: '2026-02-01',
+        waterGlasses: 2,
+      }),
+    ]);
+    expect(save).toHaveBeenCalled();
+  });
+
   it('waits for pending workbook saves before allowing sign-out', async () => {
     let resolveSave: (() => void) | undefined;
     await TestBed.configureTestingModule({

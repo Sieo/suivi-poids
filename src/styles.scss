@@ -137,6 +137,35 @@ a:focus-visible {
   padding: 5px 8px;
 }
 
+.home-page .meal-consumed-tag {
+  background: #e4f0e2;
+  color: #52754f;
+}
+
+.home-page .meal-consumed .meal-art {
+  background: repeating-linear-gradient(128deg, #a9cba7 0 58px, #bdd8b9 58px 116px);
+}
+
+.home-page .hydration-card {
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.home-page .hydration-card:hover:not(:disabled) {
+  border-color: #a9c8d1;
+}
+
+.home-page .hydration-card:focus-visible {
+  outline: 2px solid #6e9fb0;
+  outline-offset: 2px;
+}
+
+.home-page .hydration-card:disabled {
+  cursor: default;
+}
+
 .home-page .meal-cards {
   display: flex;
   gap: 14px;
