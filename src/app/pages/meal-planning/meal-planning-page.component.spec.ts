@@ -30,12 +30,58 @@ describe('MealPlanningPageComponent', () => {
     const fixture = TestBed.createComponent(MealPlanningPageComponent);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    const selectedDay = compiled.querySelector('.day-tab.selected');
+    const selectedDay = compiled.querySelector<HTMLButtonElement>('.calendar-day.selected');
+    const today = new Date();
+    const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
     expect(compiled.querySelector('.section-heading h2')?.textContent).toContain(
       'Planning semaine',
     );
-    expect(selectedDay?.textContent).toContain(String(new Date().getDate()));
+    expect(selectedDay?.getAttribute('data-date')).toBe(todayIso);
+    expect(selectedDay?.getAttribute('aria-current')).toBe('date');
+    expect(compiled.querySelectorAll('.calendar-day')).toHaveLength(42);
+    expect(compiled.querySelectorAll('.meal-row')).toHaveLength(3);
+  });
+
+  it('should navigate months while preserving the selected day of the month', async () => {
+    const fixture = TestBed.createComponent(MealPlanningPageComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const monthBefore = compiled.querySelector('.calendar-toolbar h3')?.textContent;
+
+    (compiled.querySelector('[aria-label="Mois suivant"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    const now = new Date();
+    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const selectedDay = Math.min(
+      now.getDate(),
+      new Date(nextMonth.getFullYear(), nextMonth.getMonth() + 1, 0).getDate(),
+    );
+    const expectedDay = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
+    expect(compiled.querySelector('.calendar-toolbar h3')?.textContent).not.toBe(monthBefore);
+    expect(
+      compiled
+        .querySelector<HTMLButtonElement>('.calendar-day.selected')
+        ?.getAttribute('data-date'),
+    ).toBe(expectedDay);
+    expect(compiled.querySelector('.empty-day')).not.toBeNull();
+  });
+
+  it('should show a selected date from the calendar', async () => {
+    const fixture = TestBed.createComponent(MealPlanningPageComponent);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const day = createDemoWorkbookData().mealPlans[1].plannedOn;
+
+    (compiled.querySelector(`[data-date="${day}"]`) as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    expect(
+      compiled
+        .querySelector<HTMLButtonElement>('.calendar-day.selected')
+        ?.getAttribute('data-date'),
+    ).toBe(day);
     expect(compiled.querySelectorAll('.meal-row')).toHaveLength(3);
   });
 

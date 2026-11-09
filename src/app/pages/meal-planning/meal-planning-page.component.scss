@@ -79,42 +79,26 @@ h2,
   margin-top: 4px;
 }
 
-.day-tabs {
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
-  margin-top: 16px;
-}
-
-.day-tab {
-  align-items: flex-start;
-  background: white;
+.empty-day {
+  background: #fff;
   border: 1px solid #f0ede7;
-  border-radius: 13px;
-  color: #83887d;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-height: 58px;
-  padding: 9px;
-  text-align: left;
+  border-radius: 18px;
+  margin-top: 16px;
+  padding: 18px;
 }
 
-.day-tab.selected {
-  background: #fbe8e2;
-  border-color: #ed795f;
-  color: #b95d4b;
+.empty-day h3 {
+  color: #3d493e;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
 }
 
-.day-tab span {
-  font-size: 8px;
-}
-
-.day-tab strong {
-  color: #3b473b;
-  font-family: 'Playfair Display', serif;
-  font-size: 17px;
+.empty-day p {
+  color: #898d82;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
 .day-plan {
@@ -299,25 +283,6 @@ h2,
 
   .summary-card small {
     font-size: 7px;
-  }
-
-  .day-tabs {
-    display: flex;
-    gap: 7px;
-    margin-right: -14px;
-    overflow-x: auto;
-    padding: 2px 14px 5px 0;
-    scrollbar-width: none;
-  }
-
-  .day-tab {
-    flex: 0 0 54px;
-    min-height: 50px;
-    padding: 6px;
-  }
-
-  .day-tabs::-webkit-scrollbar {
-    display: none;
   }
 
   .day-plan {

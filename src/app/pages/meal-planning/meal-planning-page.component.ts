@@ -1,14 +1,14 @@
-import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { MealPlan, MealStatus } from '../../core/models';
 import { WorkbookDataService } from '../../core/services/workbook-data.service';
+import { MealCalendarComponent } from './components/meal-calendar/meal-calendar.component';
 import { MealPlanningHeroComponent } from './components/meal-planning-hero/meal-planning-hero.component';
 
 const toIsoDate = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 @Component({
-  imports: [DatePipe, MealPlanningHeroComponent],
+  imports: [MealCalendarComponent, MealPlanningHeroComponent],
   selector: 'app-meal-planning-page',
   styleUrl: './meal-planning-page.component.scss',
   templateUrl: './meal-planning-page.component.html',
@@ -16,16 +16,28 @@ const toIsoDate = (date: Date): string =>
 export class MealPlanningPageComponent {
   protected readonly workbook = inject(WorkbookDataService);
   protected readonly selectedDate = signal(toIsoDate(new Date()));
+  protected readonly allPlans = computed(() =>
+    [...this.workbook.data().mealPlans].sort((a, b) => a.plannedOn.localeCompare(b.plannedOn)),
+  );
+  protected readonly planDates = computed(() => this.allPlans().map((plan) => plan.plannedOn));
   protected readonly plans = computed(() => {
     const week = this.workbook.data().week;
-    return this.workbook
-      .data()
-      .mealPlans.filter((plan) => plan.plannedOn >= week.startsOn && plan.plannedOn <= week.endsOn)
-      .sort((a, b) => a.plannedOn.localeCompare(b.plannedOn));
+    return this.allPlans().filter(
+      (plan) => plan.plannedOn >= week.startsOn && plan.plannedOn <= week.endsOn,
+    );
   });
   protected readonly selectedPlan = computed(
-    () => this.plans().find((plan) => plan.plannedOn === this.selectedDate()) ?? null,
+    () => this.allPlans().find((plan) => plan.plannedOn === this.selectedDate()) ?? null,
   );
+  protected readonly selectedDayLabel = computed(() => {
+    const label = new Intl.DateTimeFormat('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(`${this.selectedDate()}T00:00:00`));
+    return `${label.charAt(0).toLocaleUpperCase('fr-FR')}${label.slice(1)}`;
+  });
   protected readonly periodLabels = [
     { key: 'breakfast', label: 'Petit-déjeuner', icon: '☀', time: 'Matin' },
     { key: 'lunch', label: 'Déjeuner', icon: '◉', time: 'Midi' },
@@ -72,6 +84,4 @@ export class MealPlanningPageComponent {
   protected mealStatus(plan: MealPlan, period: string): MealStatus {
     return plan[period as 'breakfast' | 'lunch' | 'dinner'].status;
   }
-
-  protected readonly trackPlan = (_: number, plan: MealPlan) => plan.id;
 }

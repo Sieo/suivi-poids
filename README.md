@@ -63,8 +63,9 @@ semaine affichée.
 
 ## Pages
 
-- **Planning semaine** : détail des repas par jour, suivi « À renseigner »,
-  « Respecté » ou « Non respecté », et notes de journée.
+- **Planning semaine** : calendrier mensuel des jours planifiés ou archivés,
+  détail des repas du jour sélectionné, suivi « À renseigner », « Respecté » ou
+  « Non respecté », et notes de journée.
 - **Récapitulatif** : évolution des pesées, moyenne d’hydratation et de sommeil,
   ainsi que le suivi des repas, avec des repères indicatifs sans jugement.
 - **Repères portions** : repères importés sur les quantités et la pesée.

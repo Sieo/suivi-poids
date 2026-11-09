@@ -1,0 +1,141 @@
+.calendar-card {
+  background: white;
+  border: 1px solid #f0ede7;
+  border-radius: 18px;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.calendar-toolbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-toolbar h3 {
+  color: #3d493e;
+  font-size: 13px;
+  font-weight: 650;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.calendar-toolbar button {
+  align-items: center;
+  background: #f7f5ef;
+  border: 0;
+  border-radius: 50%;
+  color: #626b5b;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 21px;
+  height: 34px;
+  justify-content: center;
+  line-height: 1;
+  width: 34px;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-weekdays {
+  color: #96998f;
+  font-size: 9px;
+  font-weight: 650;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.calendar-weekdays span {
+  padding: 6px 0;
+}
+
+.calendar-grid {
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.calendar-day {
+  align-items: center;
+  aspect-ratio: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: #4e584c;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  font-size: 11px;
+  justify-content: center;
+  min-width: 0;
+}
+
+.calendar-day.outside-month {
+  color: #b9bab3;
+}
+
+.calendar-day.today {
+  border-color: #ed795f;
+}
+
+.calendar-day.selected {
+  background: #fbe8e2;
+  color: #a64f40;
+}
+
+.calendar-day:focus-visible,
+.calendar-toolbar button:focus-visible {
+  outline: 2px solid #597c5e;
+  outline-offset: 2px;
+}
+
+.calendar-day-number {
+  line-height: 1;
+}
+
+.calendar-day .calendar-plan-dot {
+  background: #e66f57;
+  border-radius: 50%;
+  height: 4px;
+  margin-top: 4px;
+  width: 4px;
+}
+
+.calendar-day.selected .calendar-plan-dot {
+  background: #a64f40;
+}
+
+.calendar-legend {
+  align-items: center;
+  color: #898d82;
+  display: flex;
+  font-size: 9px;
+  gap: 7px;
+  justify-content: flex-end;
+  margin-top: 11px;
+}
+
+.calendar-legend .calendar-plan-dot {
+  background: #e66f57;
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+}
+
+@media (max-width: 560px) {
+  .calendar-card {
+    padding: 12px;
+  }
+
+  .calendar-grid {
+    gap: 1px;
+  }
+
+  .calendar-day {
+    border-radius: 8px;
+  }
+}
