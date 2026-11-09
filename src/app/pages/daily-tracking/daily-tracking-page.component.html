@@ -109,6 +109,15 @@
                 (change)="updateText(log, 'mealsFollowed', $event)"
               />
             </label>
+            <label class="text-field">
+              <span>Collations prises</span>
+              <input
+                type="text"
+                [value]="log.snacksConsumed ?? ''"
+                placeholder="Un cappuccino, un fruit…"
+                (change)="updateText(log, 'snacksConsumed', $event)"
+              />
+            </label>
             <label class="text-field emotional-field">
               <span>Faim émotionnelle / grignotage ?</span>
               <select

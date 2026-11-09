@@ -7,6 +7,7 @@ export interface DailyLog {
   waterGlasses: number | null;
   activity: string;
   mealsFollowed: string;
+  snacksConsumed: string;
   emotionalHunger: boolean | null;
   sleepHours: number | null;
   notes: string | null;

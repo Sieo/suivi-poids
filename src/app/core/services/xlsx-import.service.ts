@@ -362,6 +362,7 @@ export const parseWorkbookSheets = (
       ),
       activity: cellAt(row, dailyHeaders, 'Activité réalisée'),
       mealsFollowed: cellAt(row, dailyHeaders, 'Repas / portions suivis'),
+      snacksConsumed: cellAt(row, dailyHeaders, 'Collations consommées'),
       emotionalHunger: booleanFromCell(
         row[dailyHeaders.get(normalize('Faim émotionnelle / grignotage ?')) ?? -1],
       ),

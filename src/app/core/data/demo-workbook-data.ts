@@ -65,6 +65,7 @@ export const createDemoWorkbookData = (): WorkbookData => {
     waterGlasses: null,
     activity: '',
     mealsFollowed: '',
+    snacksConsumed: '',
     emotionalHunger: null,
     sleepHours: null,
     notes: null,

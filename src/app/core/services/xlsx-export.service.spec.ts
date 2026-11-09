@@ -12,6 +12,7 @@ describe('buildWorkbookSheets', () => {
     plan.notes = 'Dîner remplacé par une salade.';
     data.dailyLogs[0].weightKg = 72.4;
     data.dailyLogs[0].waterGlasses = 7;
+    data.dailyLogs[0].snacksConsumed = 'Cappuccino';
     data.shoppingItems.push({
       id: 'item-1',
       weekId: data.week.id,
@@ -74,7 +75,7 @@ describe('buildWorkbookSheets', () => {
     });
     expect(
       imported.dailyLogs.find((log) => log.loggedOn === data.dailyLogs[0].loggedOn),
-    ).toMatchObject({ weightKg: 72.4, waterGlasses: 7 });
+    ).toMatchObject({ weightKg: 72.4, waterGlasses: 7, snacksConsumed: 'Cappuccino' });
     expect(imported.shoppingItems[0]).toMatchObject({ name: 'Pommes', isPurchased: true });
     expect(imported.portionGuides[0]).toMatchObject({ food: 'Riz', portion: '60 g' });
     expect(imported.readingItems[0].content).toBe('Boire régulièrement.');

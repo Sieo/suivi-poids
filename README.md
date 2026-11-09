@@ -32,8 +32,8 @@ contenant les cinq feuilles attendues :
   chaque repas et notes.
 - **Repères portions** : aliment, portion et remarque.
 - **Liste de courses** : rayon, produit, quantité, état acheté et notes.
-- **Suivi quotidien** : poids, faim/satiété, eau, activité, repas, faim
-  émotionnelle, sommeil et commentaire.
+- **Suivi quotidien** : poids, faim/satiété, eau, activité, repas, collations
+  prises (par exemple un cappuccino), faim émotionnelle, sommeil et commentaire.
 - **À lire** : période dans le titre, puis informations et conseils.
 
 L’import valide les feuilles, les en-têtes et les dates avant de mettre à jour
@@ -70,7 +70,8 @@ semaine affichée.
 - **Repères portions** : repères importés sur les quantités et la pesée.
 - **Liste de courses** : produits regroupés par rayon et cases « acheté ».
 - **Suivi quotidien** : poids facultatif, faim/satiété, hydratation, activité,
-  repas, faim émotionnelle, sommeil, commentaire et historique des repas suivis.
+  repas, collations prises, faim émotionnelle, sommeil, commentaire et
+  historique des repas suivis.
 - **À lire** : conseils et informations issus de la feuille correspondante.
 
 ## Modèle métier et sources de vérité

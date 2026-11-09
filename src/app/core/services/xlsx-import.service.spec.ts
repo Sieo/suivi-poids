@@ -92,6 +92,7 @@ describe('parseWorkbookSheets', () => {
       waterGlasses: 6,
       emotionalHunger: false,
       sleepHours: 7.5,
+      snacksConsumed: '',
     });
     expect(result.readingItems[0].content).toBe('Les portions sont données en poids cru.');
   });

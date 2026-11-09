@@ -117,6 +117,7 @@ export const buildWorkbookSheets = (data: WorkbookData): ExportSheet[] => {
           'Eau (verres)',
           'Activité réalisée',
           'Repas / portions suivis',
+          'Collations consommées',
           'Faim émotionnelle / grignotage ?',
           'Sommeil (h)',
           'Commentaire',
@@ -130,6 +131,7 @@ export const buildWorkbookSheets = (data: WorkbookData): ExportSheet[] => {
             log?.waterGlasses ?? null,
             log?.activity ?? '',
             log?.mealsFollowed ?? '',
+            log?.snacksConsumed ?? '',
             log?.emotionalHunger === null || log?.emotionalHunger === undefined
               ? ''
               : log.emotionalHunger

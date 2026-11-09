@@ -4,7 +4,7 @@ import { DailyLog, MealPlan, MealStatus } from '../../core/models';
 import { WorkbookDataService } from '../../core/services/workbook-data.service';
 
 type NumericField = 'weightKg' | 'hungerLevel' | 'waterGlasses' | 'sleepHours';
-type TextField = 'activity' | 'mealsFollowed' | 'notes';
+type TextField = 'activity' | 'mealsFollowed' | 'snacksConsumed' | 'notes';
 
 const toIsoDate = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
