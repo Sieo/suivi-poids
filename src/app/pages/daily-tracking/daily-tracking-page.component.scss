@@ -120,6 +120,47 @@
   margin-top: 12px;
 }
 
+.meal-history {
+  background: #f8f7f0;
+  border-radius: 12px;
+  margin-top: 14px;
+  padding: 12px;
+}
+
+.meal-history h3 {
+  color: #596153;
+  font-size: 10px;
+  margin: 0 0 8px;
+}
+
+.meal-history-row {
+  align-items: baseline;
+  border-top: 1px solid #eeece4;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 90px minmax(0, 1fr) auto;
+  padding: 7px 0;
+}
+
+.meal-history-row strong,
+.meal-history-row small {
+  color: #7d8277;
+  font-size: 8px;
+}
+
+.meal-history-row span {
+  color: #62695e;
+  font-size: 9px;
+}
+
+.meal-history-note {
+  color: #7b806f;
+  font-size: 9px;
+  line-height: 1.5;
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+}
+
 .comment-field textarea {
   min-height: 49px;
 }
@@ -136,5 +177,14 @@
 
   .details-grid {
     grid-template-columns: 1fr;
+  }
+
+  .meal-history-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .meal-history-row span {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 }

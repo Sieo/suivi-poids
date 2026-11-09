@@ -13,9 +13,13 @@ import { MealPlanningHeroComponent } from './components/meal-planning-hero/meal-
 export class MealPlanningPageComponent {
   protected readonly workbook = inject(WorkbookDataService);
   protected readonly selectedPlanId = signal('');
-  protected readonly plans = computed(() =>
-    [...this.workbook.data().mealPlans].sort((a, b) => a.plannedOn.localeCompare(b.plannedOn)),
-  );
+  protected readonly plans = computed(() => {
+    const week = this.workbook.data().week;
+    return this.workbook
+      .data()
+      .mealPlans.filter((plan) => plan.plannedOn >= week.startsOn && plan.plannedOn <= week.endsOn)
+      .sort((a, b) => a.plannedOn.localeCompare(b.plannedOn));
+  });
   protected readonly selectedPlan = computed(
     () => this.plans().find((plan) => plan.id === this.selectedPlanId()) ?? this.plans()[0] ?? null,
   );

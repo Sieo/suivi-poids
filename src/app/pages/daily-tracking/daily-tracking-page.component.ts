@@ -1,10 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { DailyLog } from '../../core/models';
+import { Component, inject, OnInit } from '@angular/core';
+import { DailyLog, MealPlan, MealStatus } from '../../core/models';
 import { WorkbookDataService } from '../../core/services/workbook-data.service';
 
 type NumericField = 'weightKg' | 'hungerLevel' | 'waterGlasses' | 'sleepHours';
 type TextField = 'activity' | 'mealsFollowed' | 'notes';
+
+const toIsoDate = (date: Date): string =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 @Component({
   imports: [DatePipe],
@@ -12,8 +15,25 @@ type TextField = 'activity' | 'mealsFollowed' | 'notes';
   styleUrl: './daily-tracking-page.component.scss',
   templateUrl: './daily-tracking-page.component.html',
 })
-export class DailyTrackingPageComponent {
+export class DailyTrackingPageComponent implements OnInit {
   protected readonly workbook = inject(WorkbookDataService);
+
+  ngOnInit(): void {
+    this.workbook.ensureDailyLog(toIsoDate(new Date()));
+  }
+
+  protected mealPlanFor(log: DailyLog): MealPlan | undefined {
+    return this.workbook.data().mealPlans.find((plan) => plan.plannedOn === log.loggedOn);
+  }
+
+  protected mealStatusLabel(status: MealStatus): string {
+    return {
+      planned: 'À renseigner',
+      respected: 'Respecté',
+      'not-respected': 'Non respecté',
+      replaced: 'Remplacé',
+    }[status];
+  }
 
   protected updateNumber(log: DailyLog, field: NumericField, event: Event): void {
     const raw = (event.target as HTMLInputElement).value;

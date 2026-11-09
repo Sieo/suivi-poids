@@ -42,7 +42,9 @@ l’historique est conservé même si le nouveau classeur ne contient qu’une
 semaine, et les valeurs renseignées dans le classeur importé remplacent celles
 de la même date. Les champs laissés vides dans le fichier importé conservent
 leur valeur précédente. Les autres feuilles reflètent le classeur importé. Les
-modifications réalisées dans l’application (suivi des repas, notes, courses
+anciens jours du planning et leurs statuts sont conservés dans l’historique ;
+seuls les jours de la semaine importée apparaissent dans le planning courant.
+Les modifications réalisées dans l’application (suivi des repas, notes, courses
 achetées et suivi quotidien) sont synchronisées avec Supabase. Les erreurs de
 lecture, de chargement ou d’enregistrement sont affichées dans l’interface. Le
 fichier d’origine n’est jamais modifié.
@@ -53,7 +55,8 @@ dans la base pour garder le format indépendant de l’interface.
 
 Le bouton **Télécharger Excel** génère un classeur `.xlsx` avec les cinq feuilles
 attendues par l’import. Les statuts, notes, pesées, habitudes quotidiennes et
-cases de courses sont repris depuis les données synchronisées du compte.
+cases de courses sont repris depuis les données synchronisées du compte, y
+compris les jours archivés du planning.
 La feuille **Suivi quotidien** exporte toutes les dates de l’historique ; les
 dates complètes permettent de réimporter aussi les entrées antérieures à la
 semaine affichée.
@@ -67,7 +70,7 @@ semaine affichée.
 - **Repères portions** : repères importés sur les quantités et la pesée.
 - **Liste de courses** : produits regroupés par rayon et cases « acheté ».
 - **Suivi quotidien** : poids facultatif, faim/satiété, hydratation, activité,
-  repas, faim émotionnelle, sommeil et commentaire.
+  repas, faim émotionnelle, sommeil, commentaire et historique des repas suivis.
 - **À lire** : conseils et informations issus de la feuille correspondante.
 
 ## Modèle métier et sources de vérité

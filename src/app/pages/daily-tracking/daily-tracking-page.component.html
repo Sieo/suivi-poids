@@ -122,6 +122,26 @@
             </label>
           </div>
 
+          @if (mealPlanFor(log); as plan) {
+            <section class="meal-history" aria-label="Repas prévus et suivis">
+              <h3>Repas prévus et suivi</h3>
+              @for (period of [
+                { label: 'Petit-déjeuner', meal: plan.breakfast },
+                { label: 'Déjeuner', meal: plan.lunch },
+                { label: 'Dîner', meal: plan.dinner },
+              ]; track period.label) {
+                <div class="meal-history-row">
+                  <strong>{{ period.label }}</strong>
+                  <span>{{ period.meal.description || 'Aucun repas renseigné' }}</span>
+                  <small>{{ mealStatusLabel(period.meal.status) }}</small>
+                </div>
+              }
+              @if (plan.notes) {
+                <p class="meal-history-note">{{ plan.notes }}</p>
+              }
+            </section>
+          }
+
           <label class="text-field comment-field">
             <span>Commentaire</span>
             <textarea

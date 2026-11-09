@@ -4,12 +4,6 @@ import { MealStatus, WorkbookData } from '../models';
 type ExportCell = string | number | boolean | null;
 type ExportSheet = { sheet: string; data: ExportCell[][] };
 
-const dateLabel = (isoDate: string): string => {
-  const date = new Date(`${isoDate}T00:00:00`);
-  const weekday = new Intl.DateTimeFormat('fr-FR', { weekday: 'long' }).format(date);
-  return `${weekday.charAt(0).toLocaleUpperCase('fr-FR')}${weekday.slice(1)} ${date.getDate()}`;
-};
-
 const fullDateLabel = (isoDate: string): string => {
   const date = new Date(`${isoDate}T00:00:00`);
   const label = new Intl.DateTimeFormat('fr-FR', {
@@ -81,7 +75,7 @@ export const buildWorkbookSheets = (data: WorkbookData): ExportSheet[] => {
           'Notes / écarts',
         ],
         ...mealPlans.map((plan) => [
-          dateLabel(plan.plannedOn),
+          fullDateLabel(plan.plannedOn),
           plan.breakfast.description,
           plan.lunch.description,
           plan.dinner.description,

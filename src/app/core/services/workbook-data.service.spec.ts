@@ -47,6 +47,14 @@ describe('WorkbookDataService', () => {
     const existingData = createDemoWorkbookData();
     const importedData = createDemoWorkbookData();
     const overlapDate = importedData.dailyLogs[0].loggedOn;
+    const previousPlan = {
+      ...existingData.mealPlans[0],
+      id: 'previous-week-plan',
+      weekId: 'previous-week',
+      plannedOn: '2024-01-01',
+      breakfast: { description: 'Ancien petit-déjeuner', status: 'respected' as const },
+    };
+    existingData.mealPlans = [previousPlan];
     const previousLog = {
       ...existingData.dailyLogs[0],
       id: 'previous-week-log',
@@ -108,9 +116,20 @@ describe('WorkbookDataService', () => {
       notes: 'Note conservée',
       profileId: 'test-user',
     });
+    expect(workbook.data().mealPlans).toHaveLength(8);
+    expect(workbook.data().mealPlans).toContainEqual(
+      expect.objectContaining({
+        id: 'previous-week-plan',
+        plannedOn: '2024-01-01',
+        breakfast: { description: 'Ancien petit-déjeuner', status: 'respected' },
+      }),
+    );
     expect(save).toHaveBeenCalledWith(
       'test-user',
       expect.objectContaining({
+        mealPlans: expect.arrayContaining([
+          expect.objectContaining({ id: 'previous-week-plan', plannedOn: '2024-01-01' }),
+        ]),
         dailyLogs: expect.arrayContaining([
           expect.objectContaining({ id: 'previous-week-log', loggedOn: '2024-01-01' }),
         ]),
@@ -145,6 +164,36 @@ describe('WorkbookDataService', () => {
       }),
     ]);
     expect(save).toHaveBeenCalled();
+  });
+
+  it('creates and saves an empty log for a day with no imported tracking row', async () => {
+    const data = createDemoWorkbookData();
+    data.dailyLogs = [];
+    const save = vi.fn(async () => undefined);
+    await TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: WORKBOOK_STORAGE,
+          useValue: { load: async () => data, save },
+        },
+      ],
+    }).compileComponents();
+
+    const workbook = TestBed.inject(WorkbookDataService);
+    await workbook.loadForUser('test-user');
+    workbook.ensureDailyLog('2026-02-01');
+    workbook.ensureDailyLog('2026-02-01');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(workbook.data().dailyLogs).toEqual([
+      expect.objectContaining({
+        profileId: 'test-user',
+        loggedOn: '2026-02-01',
+        activity: '',
+        mealsFollowed: '',
+      }),
+    ]);
+    expect(save).toHaveBeenCalledTimes(1);
   });
 
   it('waits for pending workbook saves before allowing sign-out', async () => {

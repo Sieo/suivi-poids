@@ -39,6 +39,13 @@ describe('buildWorkbookSheets', () => {
       loggedOn: '2024-01-01',
       weightKg: 80.2,
     });
+    data.mealPlans.push({
+      ...plan,
+      id: 'historical-plan',
+      weekId: 'previous-week',
+      plannedOn: '2024-01-01',
+      dayLabel: 'Lundi 1',
+    });
 
     const sheets = buildWorkbookSheets(data);
     expect(sheets.map((sheet) => sheet.sheet)).toEqual([
@@ -58,6 +65,9 @@ describe('buildWorkbookSheets', () => {
       lunch: { status: 'not-respected' },
       dinner: { status: 'replaced' },
       notes: 'Dîner remplacé par une salade.',
+    });
+    expect(imported.mealPlans.find((mealPlan) => mealPlan.plannedOn === '2024-01-01')).toMatchObject({
+      breakfast: { description: plan.breakfast.description },
     });
     expect(imported.dailyLogs.find((log) => log.loggedOn === '2024-01-01')).toMatchObject({
       weightKg: 80.2,

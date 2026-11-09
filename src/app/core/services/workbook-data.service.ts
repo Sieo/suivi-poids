@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DailyLog, MealStatus, WorkbookData } from '../models';
+import { DailyLog, MealPlan, MealStatus, WorkbookData } from '../models';
 import { createEmptyWorkbookData } from '../data/empty-workbook-data';
 import { WORKBOOK_STORAGE } from '../storage/workbook-storage';
 import { XlsxImportService } from './xlsx-import.service';
@@ -34,6 +34,46 @@ const mergeDailyLogs = (
   }
 
   return [...logsByDate.values()].sort((a, b) => a.loggedOn.localeCompare(b.loggedOn));
+};
+
+const mergeMealPlans = (existingPlans: MealPlan[], importedPlans: MealPlan[]): MealPlan[] => {
+  const plansByDate = new Map(existingPlans.map((plan) => [plan.plannedOn, plan]));
+
+  for (const importedPlan of importedPlans) {
+    const existingPlan = plansByDate.get(importedPlan.plannedOn);
+    if (!existingPlan) {
+      plansByDate.set(importedPlan.plannedOn, importedPlan);
+      continue;
+    }
+
+    plansByDate.set(importedPlan.plannedOn, {
+      ...importedPlan,
+      breakfast: {
+        ...importedPlan.breakfast,
+        status:
+          existingPlan.breakfast.status === 'planned'
+            ? importedPlan.breakfast.status
+            : existingPlan.breakfast.status,
+      },
+      lunch: {
+        ...importedPlan.lunch,
+        status:
+          existingPlan.lunch.status === 'planned'
+            ? importedPlan.lunch.status
+            : existingPlan.lunch.status,
+      },
+      dinner: {
+        ...importedPlan.dinner,
+        status:
+          existingPlan.dinner.status === 'planned'
+            ? importedPlan.dinner.status
+            : existingPlan.dinner.status,
+      },
+      notes: importedPlan.notes || existingPlan.notes,
+    });
+  }
+
+  return [...plansByDate.values()].sort((a, b) => a.plannedOn.localeCompare(b.plannedOn));
 };
 
 @Injectable({ providedIn: 'root' })
@@ -146,6 +186,7 @@ export class WorkbookDataService {
       const accountData = {
         ...importedData,
         week: { ...importedData.week, profileId: userId },
+        mealPlans: mergeMealPlans(this.data().mealPlans, importedData.mealPlans),
         dailyLogs: mergeDailyLogs(this.data().dailyLogs, importedData.dailyLogs, userId),
       };
       return await this.commit(
@@ -195,6 +236,36 @@ export class WorkbookDataService {
     this.update((data) => ({
       ...data,
       dailyLogs: data.dailyLogs.map((log) => (log.id === logId ? { ...log, ...changes } : log)),
+    }));
+  }
+
+  ensureDailyLog(loggedOn: string): void {
+    if (this.data().dailyLogs.some((log) => log.loggedOn === loggedOn)) {
+      return;
+    }
+
+    const profileId = this.loadedUserId;
+    if (!profileId) {
+      return;
+    }
+
+    const newLog: DailyLog = {
+      id: `daily-${profileId}-${loggedOn}`,
+      profileId,
+      loggedOn,
+      weightKg: null,
+      hungerLevel: null,
+      waterGlasses: null,
+      activity: '',
+      mealsFollowed: '',
+      emotionalHunger: null,
+      sleepHours: null,
+      notes: null,
+    };
+
+    this.update((data) => ({
+      ...data,
+      dailyLogs: [...data.dailyLogs, newLog].sort((a, b) => a.loggedOn.localeCompare(b.loggedOn)),
     }));
   }
 
