@@ -4,6 +4,9 @@ import { MealPlan, MealStatus } from '../../core/models';
 import { WorkbookDataService } from '../../core/services/workbook-data.service';
 import { MealPlanningHeroComponent } from './components/meal-planning-hero/meal-planning-hero.component';
 
+const toIsoDate = (date: Date): string =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
 @Component({
   imports: [DatePipe, MealPlanningHeroComponent],
   selector: 'app-meal-planning-page',
@@ -12,7 +15,7 @@ import { MealPlanningHeroComponent } from './components/meal-planning-hero/meal-
 })
 export class MealPlanningPageComponent {
   protected readonly workbook = inject(WorkbookDataService);
-  protected readonly selectedPlanId = signal('');
+  protected readonly selectedDate = signal(toIsoDate(new Date()));
   protected readonly plans = computed(() => {
     const week = this.workbook.data().week;
     return this.workbook
@@ -21,7 +24,7 @@ export class MealPlanningPageComponent {
       .sort((a, b) => a.plannedOn.localeCompare(b.plannedOn));
   });
   protected readonly selectedPlan = computed(
-    () => this.plans().find((plan) => plan.id === this.selectedPlanId()) ?? this.plans()[0] ?? null,
+    () => this.plans().find((plan) => plan.plannedOn === this.selectedDate()) ?? null,
   );
   protected readonly periodLabels = [
     { key: 'breakfast', label: 'Petit-déjeuner', icon: '☀', time: 'Matin' },

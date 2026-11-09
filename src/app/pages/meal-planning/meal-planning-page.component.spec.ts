@@ -30,10 +30,12 @@ describe('MealPlanningPageComponent', () => {
     const fixture = TestBed.createComponent(MealPlanningPageComponent);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
+    const selectedDay = compiled.querySelector('.day-tab.selected');
 
     expect(compiled.querySelector('.section-heading h2')?.textContent).toContain(
       'Planning semaine',
     );
+    expect(selectedDay?.textContent).toContain(String(new Date().getDate()));
     expect(compiled.querySelectorAll('.meal-row')).toHaveLength(3);
   });
 

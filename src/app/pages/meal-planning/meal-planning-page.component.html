@@ -38,9 +38,9 @@
           <button
             type="button"
             class="day-tab"
-            [class.selected]="selectedPlan()?.id === plan.id"
-            [attr.aria-pressed]="selectedPlan()?.id === plan.id"
-            (click)="selectedPlanId.set(plan.id)"
+            [class.selected]="selectedDate() === plan.plannedOn"
+            [attr.aria-pressed]="selectedDate() === plan.plannedOn"
+            (click)="selectedDate.set(plan.plannedOn)"
           >
             <span>{{ plan.dayLabel }}</span>
             <strong>{{ plan.plannedOn | date: 'd' }}</strong>
