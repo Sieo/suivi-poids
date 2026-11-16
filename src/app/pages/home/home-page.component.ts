@@ -1,6 +1,7 @@
 import { DatePipe, DecimalPipe, UpperCasePipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MealPeriod, MealPlan, Recipe } from '../../core/models';
 import { AuthService } from '../../core/services/auth.service';
 import { WorkbookDataService } from '../../core/services/workbook-data.service';
 
@@ -25,6 +26,7 @@ const isoWeekNumber = (date: Date): number => {
 export class HomePageComponent {
   protected readonly workbook = inject(WorkbookDataService);
   private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly today = new Date();
   protected readonly weekNumber = isoWeekNumber(this.today);
   protected readonly displayName = computed(() => {
@@ -90,16 +92,24 @@ export class HomePageComponent {
     { key: 'lunch', label: 'Déjeuner', time: '12:30' },
     { key: 'dinner', label: 'Dîner', time: '19:30' },
   ] as const;
+  protected recipeForMeal(plan: MealPlan, period: MealPeriod): Recipe | null {
+    const recipeId = plan[period].recipeId;
+    return this.workbook.data().recipes.find((recipe) => recipe.id === recipeId) ?? null;
+  }
+  protected openRecipe(plan: MealPlan, period: MealPeriod): void {
+    const recipe = this.recipeForMeal(plan, period);
+    if (recipe) {
+      void this.router.navigate(['/recettes', recipe.id]);
+    }
+  }
   protected readonly waterGlassMarkers = Array.from({ length: 8 });
   protected addWaterGlass(): void {
     this.workbook.addWaterGlass(todayIsoDate());
   }
   protected readonly mealAdherence = computed(() => {
-    const meals = this.workbook.data().mealPlans.flatMap((plan) => [
-      plan.breakfast,
-      plan.lunch,
-      plan.dinner,
-    ]);
+    const meals = this.workbook
+      .data()
+      .mealPlans.flatMap((plan) => [plan.breakfast, plan.lunch, plan.dinner]);
     const recordedMeals = meals.filter((meal) => meal.status !== 'planned');
     return recordedMeals.length
       ? Math.round(

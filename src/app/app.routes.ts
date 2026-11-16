@@ -64,6 +64,22 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'recettes/:recipeId',
+    canActivate: [requireAuth],
+    loadComponent: () =>
+      import('./pages/recipes/recipes-page.component').then(
+        (module) => module.RecipesPageComponent,
+      ),
+  },
+  {
+    path: 'recettes',
+    canActivate: [requireAuth],
+    loadComponent: () =>
+      import('./pages/recipes/recipes-page.component').then(
+        (module) => module.RecipesPageComponent,
+      ),
+  },
+  {
     path: 'profil',
     canActivate: [requireAuth],
     loadComponent: () =>

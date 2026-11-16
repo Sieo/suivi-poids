@@ -61,6 +61,11 @@
                       : plan[period.key].description
                   }}
                 </p>
+                @if (recipeForMeal(plan, period.key); as recipe) {
+                  <a class="meal-recipe-link" [routerLink]="['/recettes', recipe.id]">
+                    Voir la recette
+                  </a>
+                }
               </div>
               <label
                 class="meal-status"

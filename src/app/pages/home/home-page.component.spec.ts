@@ -2,6 +2,7 @@ import { signal } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { createDemoWorkbookData } from '../../core/data/demo-workbook-data';
@@ -75,5 +76,57 @@ describe('HomePageComponent', () => {
     expect(workbook.data().dailyLogs.find((log) => log.loggedOn === todayIso)?.waterGlasses).toBe(
       1,
     );
+  });
+
+  it('navigates to a meal recipe when its home card is clicked', async () => {
+    const workbook = TestBed.inject(WorkbookDataService);
+    const today = new Date();
+    const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const todayPlan = workbook.data().mealPlans.find((plan) => plan.plannedOn === todayIso);
+    expect(todayPlan).toBeDefined();
+    const recipeId = 'today-breakfast-recipe';
+    workbook.data.update((data) => ({
+      ...data,
+      recipes: [
+        {
+          id: recipeId,
+          profileId: 'test-user',
+          name: 'Porridge maison',
+          description: '',
+          ingredients: 'Flocons d’avoine',
+          instructions: 'Mélanger.',
+          baseServings: 1,
+          preparationMinutes: null,
+          plannedOn: todayIso,
+          mealPeriod: 'breakfast',
+          imageUrl: null,
+        },
+      ],
+      mealPlans: data.mealPlans.map((plan) =>
+        plan.id === todayPlan!.id ? { ...plan, breakfast: { ...plan.breakfast, recipeId } } : plan,
+      ),
+    }));
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    const fixture = TestBed.createComponent(HomePageComponent);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector('.meal-card') as HTMLElement;
+    expect(card.getAttribute('role')).toBe('link');
+    expect(card.getAttribute('tabindex')).toBe('0');
+    card.click();
+
+    expect(navigate).toHaveBeenCalledWith(['/recettes', recipeId]);
+  });
+
+  it('keeps meal cards non-interactive when no recipe is linked', async () => {
+    const fixture = TestBed.createComponent(HomePageComponent);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector('.meal-card') as HTMLElement;
+    expect(card.hasAttribute('role')).toBe(false);
+    expect(card.hasAttribute('tabindex')).toBe(false);
   });
 });

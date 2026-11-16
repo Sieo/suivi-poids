@@ -23,6 +23,7 @@ export const createEmptyWorkbookData = (userId: string): WorkbookData => {
       notes: null,
     },
     mealPlans: [],
+    recipes: [],
     portionGuides: [],
     shoppingItems: [],
     dailyLogs: [],

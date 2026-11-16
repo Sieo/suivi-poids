@@ -55,9 +55,17 @@
     @if (todayPlan(); as plan) {
       <div class="meal-cards" role="region" aria-label="Menus du jour à faire défiler" tabindex="0">
         @for (period of periods; track period.key) {
+          @let recipe = recipeForMeal(plan, period.key);
           <article
             class="meal-card"
             [class.meal-consumed]="plan[period.key].status === 'respected'"
+            [class.meal-card-link]="recipe"
+            [style.cursor]="recipe ? 'pointer' : null"
+            [attr.role]="recipe ? 'link' : null"
+            [attr.tabindex]="recipe ? 0 : null"
+            [attr.aria-label]="recipe ? 'Voir la recette : ' + recipe.name : null"
+            (click)="openRecipe(plan, period.key)"
+            (keydown.enter)="openRecipe(plan, period.key)"
           >
             <div class="meal-art" aria-hidden="true"></div>
             <div class="meal-card-copy">

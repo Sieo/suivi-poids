@@ -1,0 +1,85 @@
+<div class="page-content">
+  @if (recipeId()) {
+    @if (recipe(); as item) {
+      <header class="page-heading">
+        <a class="back-link" routerLink="/recettes">← Toutes les recettes</a>
+        <p class="eyebrow">RECETTE</p>
+        <h1>{{ item.name }}</h1>
+        <p>
+          {{ item.plannedOn ? (item.plannedOn | date: 'EEEE d MMMM' : '' : 'fr') : '' }}
+          @if (item.baseServings > 0) {
+            <span> · {{ item.baseServings }} portion{{ item.baseServings > 1 ? 's' : '' }}</span>
+          }
+        </p>
+      </header>
+
+      <article class="recipe-detail">
+        @if (item.imageUrl) {
+          <img class="recipe-image" [src]="item.imageUrl" [alt]="item.name" />
+        }
+        @if (item.ingredients) {
+          <section aria-labelledby="ingredients-heading">
+            <h2 id="ingredients-heading">Ingrédients</h2>
+            <p>{{ item.ingredients }}</p>
+          </section>
+        }
+        @if (item.instructions) {
+          <section aria-labelledby="instructions-heading">
+            <h2 id="instructions-heading">Préparation</h2>
+            <p>{{ item.instructions }}</p>
+          </section>
+        }
+        @if (item.preparationMinutes) {
+          <p class="recipe-time">Préparation : {{ item.preparationMinutes }} min</p>
+        }
+      </article>
+    } @else {
+      <header class="page-heading">
+        <a class="back-link" routerLink="/recettes">← Toutes les recettes</a>
+        <h1>Recette introuvable</h1>
+        <p>Cette recette n’est pas présente dans le classeur importé.</p>
+      </header>
+    }
+  } @else {
+    <header class="page-heading">
+      <p class="eyebrow">VOS IDÉES DE REPAS</p>
+      <h1>Recettes</h1>
+      <p>{{ workbook.data().week.title }}</p>
+    </header>
+
+    @if (recipes().length === 0) {
+      <div class="empty-state">
+        Importez un classeur contenant une feuille « Recettes » pour retrouver vos recettes.
+      </div>
+    } @else {
+      <section class="recipe-grid" aria-label="Toutes les recettes">
+        @for (item of recipes(); track item.id) {
+          <article class="recipe-card">
+            @if (item.imageUrl) {
+              <img class="recipe-image" [src]="item.imageUrl" [alt]="item.name" loading="lazy" />
+            }
+            <div class="recipe-card-content">
+              <p class="recipe-context">
+                @if (item.mealPeriod === 'breakfast') {
+                  Petit-déjeuner
+                } @else if (item.mealPeriod === 'lunch') {
+                  Déjeuner
+                } @else if (item.mealPeriod === 'dinner') {
+                  Dîner
+                }
+                @if (item.plannedOn) {
+                  · {{ item.plannedOn | date: 'd MMMM' : '' : 'fr' }}
+                }
+              </p>
+              <h2>{{ item.name }}</h2>
+              <p>{{ item.baseServings }} portion{{ item.baseServings > 1 ? 's' : '' }}</p>
+              <a class="recipe-link" [routerLink]="['/recettes', item.id]">
+                Voir la recette <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        }
+      </section>
+    }
+  }
+</div>

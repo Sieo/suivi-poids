@@ -24,7 +24,13 @@
 html {
   background: #e8e8e2;
   color-scheme: light;
-  font-family: 'DM Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    'DM Sans',
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -267,6 +273,12 @@ a:focus-visible {
   height: 80px;
   transform: rotate(-12deg);
   width: 80px;
+}
+
+@media (max-width: 560px) {
+  body .page-content :is(p, small, label, button, a, select, textarea, li, dt, dd, summary) {
+    font-size: max(12px, calc(1em + 1px)) !important;
+  }
 }
 
 @media (max-width: 560px) {

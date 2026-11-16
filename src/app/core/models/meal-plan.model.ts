@@ -1,4 +1,5 @@
 export type MealStatus = 'planned' | 'respected' | 'not-respected' | 'replaced';
+export type MealPeriod = 'breakfast' | 'lunch' | 'dinner';
 
 export interface PlannedMeal {
   description: string;

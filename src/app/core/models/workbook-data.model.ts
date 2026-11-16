@@ -1,6 +1,7 @@
 import { DailyLog } from './daily-log.model';
 import { MealPlan } from './meal-plan.model';
 import { PortionGuide } from './portion-guide.model';
+import { Recipe } from './recipe.model';
 import { ReadingItem } from './reading-item.model';
 import { ShoppingItem } from './shopping-item.model';
 import { Week } from './week.model';
@@ -11,6 +12,7 @@ export interface WorkbookData {
   importedAt: string | null;
   week: Week;
   mealPlans: MealPlan[];
+  recipes: Recipe[];
   portionGuides: PortionGuide[];
   shoppingItems: ShoppingItem[];
   dailyLogs: DailyLog[];
@@ -27,6 +29,7 @@ export const isWorkbookData = (value: unknown): value is WorkbookData => {
     data.version === 1 &&
     !!data.week &&
     Array.isArray(data.mealPlans) &&
+    (data.recipes === undefined || Array.isArray(data.recipes)) &&
     Array.isArray(data.portionGuides) &&
     Array.isArray(data.shoppingItems) &&
     Array.isArray(data.dailyLogs) &&

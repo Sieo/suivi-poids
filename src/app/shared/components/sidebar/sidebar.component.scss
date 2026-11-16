@@ -97,11 +97,12 @@
   }
 
   .mobile-navigation a {
-    min-width: 52px;
+    flex: 1 1 0;
+    min-width: 0;
     padding: 0 2px;
   }
 
   .mobile-navigation small {
-    font-size: 8px;
+    font-size: 10px;
   }
 }

@@ -95,6 +95,88 @@ describe('parseWorkbookSheets', () => {
       snacksConsumed: '',
     });
     expect(result.readingItems[0].content).toBe('Les portions sont données en poids cru.');
+    expect(result.recipes).toEqual([]);
+  });
+
+  it('imports recipes from their sheet and links them to the specified meal', () => {
+    const workbook = [
+      ...sheets,
+      {
+        sheet: 'Recettes',
+        data: [
+          [
+            'Jour',
+            'Repas',
+            'Nom',
+            'Portions',
+            'Ingrédients',
+            'Préparation',
+            'Temps de préparation (min)',
+            'Image (URL)',
+          ],
+          [
+            'Mardi 3 novembre 2026',
+            'Déjeuner',
+            'Salade complète',
+            2,
+            'Riz, pois chiches',
+            'Cuire le riz.\nAssembler.',
+            20,
+            '',
+          ],
+        ],
+      },
+    ] as WorkbookSheet;
+
+    const result = parseWorkbookSheets(workbook, 'planning.xlsx');
+
+    expect(result.recipes[0]).toMatchObject({
+      name: 'Salade complète',
+      baseServings: 2,
+      ingredients: 'Riz, pois chiches',
+      preparationMinutes: 20,
+      plannedOn: '2026-11-03',
+      mealPeriod: 'lunch',
+      imageUrl: null,
+    });
+    expect(result.mealPlans[0].lunch.recipeId).toBe(result.recipes[0].id);
+  });
+
+  it('extracts recipes from the legacy reading sheet while keeping other reading notes', () => {
+    const legacy = structuredClone(sheets);
+    legacy[4].data.push(
+      ['RECETTES ET MODES DE PRÉPARATION'],
+      ['MARDI MIDI – SALADE COMPLÈTE (1 portion)'],
+      ['Ingrédients : Riz, pois chiches.'],
+      ['1. Cuire le riz.'],
+      ['2. Assembler.'],
+      ['SAMEDI MATIN – PETIT-DÉJEUNER SOJA (1 portion)'],
+      ['Ingrédients : Yaourt soja, avoine.'],
+      ['1. Mélanger et servir.'],
+      ['ORGANISATION / CONSERVATION'],
+      ['• Garder les restes au frais.'],
+    );
+
+    const result = parseWorkbookSheets(legacy, 'planning.xlsx');
+
+    expect(result.recipes).toHaveLength(2);
+    expect(result.recipes[0]).toMatchObject({
+      name: 'SALADE COMPLÈTE',
+      ingredients: 'Riz, pois chiches.',
+      instructions: '1. Cuire le riz.\n2. Assembler.',
+      plannedOn: '2026-11-03',
+      mealPeriod: 'lunch',
+    });
+    expect(result.recipes[1]).toMatchObject({
+      name: 'PETIT-DÉJEUNER SOJA',
+      plannedOn: '2026-11-07',
+      mealPeriod: 'breakfast',
+    });
+    expect(result.mealPlans[0].lunch.recipeId).toBe(result.recipes[0].id);
+    expect(result.readingItems.map((item) => item.content)).toContain(
+      'Garder les restes au frais.',
+    );
+    expect(result.readingItems.some((item) => item.content.includes('Cuire le riz'))).toBe(false);
   });
 
   it('rejects a workbook if a required sheet is missing', () => {

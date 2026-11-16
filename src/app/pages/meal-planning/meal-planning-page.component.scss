@@ -178,6 +178,19 @@ h2,
   white-space: pre-wrap;
 }
 
+.meal-recipe-link {
+  color: #d66c55;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 8px;
+  text-decoration: none;
+}
+
+.meal-recipe-link:hover {
+  text-decoration: underline;
+}
+
 .meal-status {
   align-items: center;
   background: #f5f3ec;

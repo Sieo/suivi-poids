@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MealStatus, WorkbookData } from '../models';
+import { MealPeriod, MealStatus, WorkbookData } from '../models';
 
 type ExportCell = string | number | boolean | null;
 type ExportSheet = { sheet: string; data: ExportCell[][] };
@@ -23,6 +23,19 @@ const mealStatusCell = (status: MealStatus): string =>
       : status === 'replaced'
         ? 'Remplacé'
         : '';
+
+const mealPeriodLabel = (period: MealPeriod): string => {
+  switch (period) {
+    case 'breakfast':
+      return 'Petit-déjeuner';
+    case 'lunch':
+      return 'Déjeuner';
+    case 'dinner':
+      return 'Dîner';
+    default:
+      return '';
+  }
+};
 
 const readingTitle = (data: WorkbookData): string => {
   if (/semaine\s+du\s+/iu.test(data.week.title)) {
@@ -53,6 +66,11 @@ const readingTitle = (data: WorkbookData): string => {
 
 export const buildWorkbookSheets = (data: WorkbookData): ExportSheet[] => {
   const mealPlans = [...data.mealPlans].sort((a, b) => a.plannedOn.localeCompare(b.plannedOn));
+  const recipes = [...(data.recipes ?? [])].sort((a, b) =>
+    `${a.plannedOn ?? ''}-${a.mealPeriod ?? ''}`.localeCompare(
+      `${b.plannedOn ?? ''}-${b.mealPeriod ?? ''}`,
+    ),
+  );
   const dailyLogs = [...data.dailyLogs].sort((a, b) => a.loggedOn.localeCompare(b.loggedOn));
   const plansByDate = new Map(mealPlans.map((plan) => [plan.plannedOn, plan]));
   const logsByDate = new Map(dailyLogs.map((log) => [log.loggedOn, log]));
@@ -149,6 +167,31 @@ export const buildWorkbookSheets = (data: WorkbookData): ExportSheet[] => {
         [readingTitle(data)],
         [null],
         ...data.readingItems.map((item) => [`• ${item.content}`]),
+      ],
+    },
+    {
+      sheet: 'recettes',
+      data: [
+        [
+          'Jour',
+          'Repas',
+          'Nom',
+          'Portions',
+          'Ingrédients',
+          'Préparation',
+          'Temps de préparation (min)',
+          'Image (URL)',
+        ],
+        ...recipes.map((recipe) => [
+          fullDateLabel(recipe.plannedOn),
+          mealPeriodLabel(recipe.mealPeriod),
+          recipe.name,
+          recipe.baseServings,
+          recipe.ingredients,
+          recipe.instructions ?? '',
+          recipe.preparationMinutes,
+          recipe.imageUrl ?? '',
+        ]),
       ],
     },
   ];

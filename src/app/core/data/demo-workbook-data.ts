@@ -80,6 +80,7 @@ export const createDemoWorkbookData = (): WorkbookData => {
     importedAt: null,
     week,
     mealPlans,
+    recipes: [],
     portionGuides: emptyPortions,
     shoppingItems: emptyShopping,
     dailyLogs,

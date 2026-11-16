@@ -26,7 +26,7 @@ pas transférées automatiquement : connectez-vous puis importez votre classeur
 ## Import du classeur
 
 Utilisez le bouton **Importer un fichier .xlsx** et choisissez le classeur
-contenant les cinq feuilles attendues :
+contenant les cinq feuilles de base :
 
 - **Planning semaine** : repas, collations, estimation journalière, statut de
   chaque repas et notes.
@@ -35,6 +35,9 @@ contenant les cinq feuilles attendues :
 - **Suivi quotidien** : poids, faim/satiété, eau, activité, repas, collations
   prises (par exemple un cappuccino), faim émotionnelle, sommeil et commentaire.
 - **À lire** : période dans le titre, puis informations et conseils.
+- **recettes** (facultative) : jour, créneau, nom, portions, ingrédients et
+  préparation. Les anciens classeurs avec une section « Recettes et modes de
+  préparation » dans « À lire » restent pris en charge.
 
 L’import valide les feuilles, les en-têtes et les dates avant de mettre à jour
 les données du compte connecté. Le suivi quotidien est fusionné par date :
@@ -53,8 +56,8 @@ Le classeur fourni sert à vérifier le format pris en charge. La structure rest
 isolée derrière une interface de stockage et son contenu est conservé tel quel
 dans la base pour garder le format indépendant de l’interface.
 
-Le bouton **Télécharger Excel** génère un classeur `.xlsx` avec les cinq feuilles
-attendues par l’import. Les statuts, notes, pesées, habitudes quotidiennes et
+Le bouton **Télécharger Excel** génère un classeur `.xlsx` avec les six feuilles,
+dont « recettes ». Les statuts, notes, pesées, habitudes quotidiennes et
 cases de courses sont repris depuis les données synchronisées du compte, y
 compris les jours archivés du planning.
 La feuille **Suivi quotidien** exporte toutes les dates de l’historique ; les
@@ -74,6 +77,8 @@ semaine affichée.
   repas, collations prises, faim émotionnelle, sommeil, commentaire et
   historique des repas suivis.
 - **À lire** : conseils et informations issus de la feuille correspondante.
+- **Recettes** : recettes du classeur, également accessibles depuis les repas
+  auxquels elles sont associées dans le planning.
 
 ## Modèle métier et sources de vérité
 

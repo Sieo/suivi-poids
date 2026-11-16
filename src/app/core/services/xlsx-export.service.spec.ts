@@ -3,7 +3,7 @@ import { parseWorkbookSheets } from './xlsx-import.service';
 import { buildWorkbookSheets } from './xlsx-export.service';
 
 describe('buildWorkbookSheets', () => {
-  it('exports the five importable sheets and preserves the tracked fields', () => {
+  it('exports the six importable sheets and preserves the tracked fields', () => {
     const data = createDemoWorkbookData();
     const plan = data.mealPlans[0];
     plan.breakfast.status = 'respected';
@@ -34,6 +34,20 @@ describe('buildWorkbookSheets', () => {
       category: 'Conseils',
       content: 'Boire régulièrement.',
     });
+    data.recipes.push({
+      id: 'recipe-1',
+      profileId: 'local-profile',
+      name: 'Porridge maison',
+      description: '',
+      ingredients: 'Flocons d’avoine, lait végétal.',
+      instructions: 'Mélanger.',
+      baseServings: 1,
+      preparationMinutes: 10,
+      plannedOn: plan.plannedOn,
+      mealPeriod: 'breakfast',
+      imageUrl: null,
+    });
+    plan.breakfast.recipeId = 'recipe-1';
     data.dailyLogs.push({
       ...data.dailyLogs[0],
       id: 'historical-log',
@@ -55,6 +69,7 @@ describe('buildWorkbookSheets', () => {
       'Liste de courses',
       'Suivi quotidien',
       'À lire',
+      'recettes',
     ]);
 
     const imported = parseWorkbookSheets(
@@ -67,7 +82,9 @@ describe('buildWorkbookSheets', () => {
       dinner: { status: 'replaced' },
       notes: 'Dîner remplacé par une salade.',
     });
-    expect(imported.mealPlans.find((mealPlan) => mealPlan.plannedOn === '2024-01-01')).toMatchObject({
+    expect(
+      imported.mealPlans.find((mealPlan) => mealPlan.plannedOn === '2024-01-01'),
+    ).toMatchObject({
       breakfast: { description: plan.breakfast.description },
     });
     expect(imported.dailyLogs.find((log) => log.loggedOn === '2024-01-01')).toMatchObject({
@@ -79,6 +96,18 @@ describe('buildWorkbookSheets', () => {
     expect(imported.shoppingItems[0]).toMatchObject({ name: 'Pommes', isPurchased: true });
     expect(imported.portionGuides[0]).toMatchObject({ food: 'Riz', portion: '60 g' });
     expect(imported.readingItems[0].content).toBe('Boire régulièrement.');
+    expect(imported.recipes[0]).toMatchObject({
+      id: 'recipe-2026-11-16-breakfast',
+      name: 'Porridge maison',
+      ingredients: 'Flocons d’avoine, lait végétal.',
+      plannedOn: plan.plannedOn,
+      mealPeriod: 'breakfast',
+      imageUrl: null,
+    });
+    expect(
+      imported.mealPlans.find((mealPlan) => mealPlan.plannedOn === plan.plannedOn)?.breakfast
+        .recipeId,
+    ).toBe(imported.recipes[0].id);
   });
 
   it('exports periods that cross a month boundary in an importable format', () => {

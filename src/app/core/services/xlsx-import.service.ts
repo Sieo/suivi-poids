@@ -3,8 +3,10 @@ import type { Sheet } from 'read-excel-file/browser';
 import {
   DailyLog,
   MealPlan,
+  MealPeriod,
   MealStatus,
   PortionGuide,
+  Recipe,
   ReadingItem,
   ShoppingItem,
   Week,
@@ -243,8 +245,167 @@ const dateForLabel = (label: string, week: Week): string => {
   );
 };
 
+const periodForLabel = (value: string): MealPeriod => {
+  const period = normalize(value);
+  if (['petit dejeuner', 'petit dej', 'matin'].includes(period)) {
+    return 'breakfast';
+  }
+  if (['dejeuner', 'midi'].includes(period)) {
+    return 'lunch';
+  }
+  if (['diner', 'soir'].includes(period)) {
+    return 'dinner';
+  }
+  throw new Error(`Créneau de repas non reconnu dans la feuille « Recettes » : « ${value} ».`);
+};
+
+const parseRecipeRows = (rows: CellValue[][], week: Week): Recipe[] => {
+  const headers = headerMap(rows, 'Recettes');
+  for (const column of ['Jour', 'Repas', 'Nom', 'Portions', 'Ingrédients', 'Préparation']) {
+    requiredColumn(headers, column, 'Recettes');
+  }
+
+  return nonEmptyRows(rows).map((row) => {
+    const plannedOn = dateForLabel(cellAt(row, headers, 'Jour'), week);
+    const mealPeriod = periodForLabel(cellAt(row, headers, 'Repas'));
+    const portions = optionalNumber(row[headers.get(normalize('Portions')) ?? -1]);
+    return {
+      id: `recipe-${plannedOn}-${mealPeriod}`,
+      profileId: 'local-profile',
+      name: cellAt(row, headers, 'Nom'),
+      description: '',
+      ingredients: cellAt(row, headers, 'Ingrédients'),
+      instructions: cellAt(row, headers, 'Préparation') || null,
+      baseServings: portions ?? 1,
+      preparationMinutes: optionalNumber(
+        row[headers.get(normalize('Temps de préparation (min)')) ?? -1],
+      ),
+      plannedOn,
+      mealPeriod,
+      imageUrl: cellAt(row, headers, 'Image (URL)') || null,
+    };
+  });
+};
+
+const parseLegacyRecipes = (rows: CellValue[][], week: Week): Recipe[] => {
+  const sectionStart = rows.findIndex(
+    (row) => normalize(cellText(row[0])) === 'recettes et modes de preparation',
+  );
+  if (sectionStart < 0) {
+    return [];
+  }
+
+  const sectionEnd = rows.findIndex(
+    (row, index) =>
+      index > sectionStart && normalize(cellText(row[0])) === 'organisation conservation',
+  );
+  const recipeRows = rows.slice(sectionStart + 1, sectionEnd < 0 ? undefined : sectionEnd);
+  const recipes: Recipe[] = [];
+  let current: Recipe | null = null;
+
+  for (const row of recipeRows) {
+    const content = row
+      .map(cellText)
+      .filter(Boolean)
+      .join(' ')
+      .replace(/^[•\s]+/, '');
+    if (!content) {
+      continue;
+    }
+
+    const heading = content.match(
+      /^(.+?)\s+(?:\u2013|\u2014)\s+(.+?)\s*\((\d+)\s+portions?\b.*\)$/iu,
+    );
+    if (heading) {
+      const placement = heading[1].match(
+        /^(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\s+(matin|midi|soir)$/iu,
+      );
+      if (!placement) {
+        current = null;
+        continue;
+      }
+
+      const weekday = placement[1].toLocaleLowerCase('fr-FR');
+      const dayNumber = weekDayInWeek(weekday, week);
+      const plannedOn = dateForLabel(`${placement[1]} ${dayNumber}`, week);
+      const mealPeriod = periodForLabel(placement[2]);
+      current = {
+        id: `recipe-${plannedOn}-${mealPeriod}`,
+        profileId: 'local-profile',
+        name: heading[2].trim(),
+        description: '',
+        ingredients: '',
+        instructions: null,
+        baseServings: Number(heading[3]),
+        preparationMinutes: null,
+        plannedOn,
+        mealPeriod,
+        imageUrl: null,
+      };
+      recipes.push(current);
+      continue;
+    }
+
+    if (!current) {
+      continue;
+    }
+    if (/^ingrédients\s*:/iu.test(content)) {
+      current.ingredients = content.replace(/^ingrédients\s*:\s*/iu, '');
+    } else if (/^\d+[.)]\s*/u.test(content)) {
+      current.instructions = [current.instructions, content].filter(Boolean).join('\n');
+    }
+  }
+
+  return recipes;
+};
+
+const weekDayInWeek = (weekday: string, week: Week): number => {
+  const date = new Date(`${week.startsOn}T00:00:00`);
+  const end = new Date(`${week.endsOn}T00:00:00`);
+  while (date <= end) {
+    if (normalize(date.toLocaleDateString('fr-FR', { weekday: 'long' })) === weekday) {
+      return date.getDate();
+    }
+    date.setDate(date.getDate() + 1);
+  }
+  throw new Error(`Aucun jour « ${weekday} » trouvé dans la période du classeur.`);
+};
+
+const linkRecipesToMeals = (recipes: Recipe[], mealPlans: MealPlan[]): void => {
+  const linkedMeals = new Set<string>();
+  for (const recipe of recipes) {
+    const key = `${recipe.plannedOn}-${recipe.mealPeriod}`;
+    if (linkedMeals.has(key)) {
+      throw new Error(
+        `Plusieurs recettes sont associées au même repas (${recipe.plannedOn}, ${recipe.mealPeriod}).`,
+      );
+    }
+    linkedMeals.add(key);
+
+    const plan = mealPlans.find((item) => item.plannedOn === recipe.plannedOn);
+    if (plan) {
+      plan[recipe.mealPeriod].recipeId = recipe.id;
+    }
+  }
+};
+
 const nonEmptyRows = (rows: CellValue[][]): CellValue[][] =>
   rows.slice(1).filter((row) => row.some((value) => cellText(value) !== ''));
+
+const nonRecipeReadingRows = (rows: CellValue[][]): CellValue[][] => {
+  let inRecipes = false;
+  return rows.slice(1).filter((row) => {
+    const title = normalize(cellText(row[0]));
+    if (title === 'recettes et modes de preparation') {
+      inRecipes = true;
+      return false;
+    }
+    if (title === 'organisation conservation') {
+      inRecipes = false;
+    }
+    return !inRecipes;
+  });
+};
 
 export const parseWorkbookSheets = (
   sheets: WorkbookSheet,
@@ -324,6 +485,12 @@ export const parseWorkbookSheets = (
     };
   });
 
+  const recipesSheet = findSheet(sheets, 'Recettes');
+  const recipes = recipesSheet
+    ? parseRecipeRows(recipesSheet.data as CellValue[][], week)
+    : parseLegacyRecipes(readingRows, week);
+  linkRecipesToMeals(recipes, mealPlans);
+
   const portionGuides: PortionGuide[] = nonEmptyRows(portionsRows).map((row, index) => ({
     id: `portion-${index}`,
     food: cellAt(row, portionHeaders, 'Aliment'),
@@ -371,7 +538,7 @@ export const parseWorkbookSheets = (
     };
   });
 
-  const readingItems: ReadingItem[] = readingRows.slice(1).flatMap((row, index) => {
+  const readingItems: ReadingItem[] = nonRecipeReadingRows(readingRows).flatMap((row, index) => {
     const content = row.map(cellText).filter(Boolean).join(' ');
     if (!content) {
       return [];
@@ -393,6 +560,7 @@ export const parseWorkbookSheets = (
     importedAt,
     week,
     mealPlans,
+    recipes,
     portionGuides,
     shoppingItems,
     dailyLogs,

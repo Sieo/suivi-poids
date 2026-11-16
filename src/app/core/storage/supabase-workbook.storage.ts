@@ -27,7 +27,10 @@ export class SupabaseWorkbookStorage implements WorkbookStorage {
       throw new Error('Les données enregistrées dans Supabase ne sont pas reconnues.');
     }
 
-    return data.workbook_data;
+    return {
+      ...data.workbook_data,
+      recipes: data.workbook_data.recipes ?? [],
+    };
   }
 
   async save(userId: string, workbookData: WorkbookData): Promise<void> {

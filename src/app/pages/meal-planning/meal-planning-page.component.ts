@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { MealPlan, MealStatus } from '../../core/models';
+import { RouterLink } from '@angular/router';
+import { MealPlan, MealPeriod, MealStatus, Recipe } from '../../core/models';
 import { WorkbookDataService } from '../../core/services/workbook-data.service';
 import { MealCalendarComponent } from './components/meal-calendar/meal-calendar.component';
 import { MealPlanningHeroComponent } from './components/meal-planning-hero/meal-planning-hero.component';
@@ -8,7 +9,7 @@ const toIsoDate = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 @Component({
-  imports: [MealCalendarComponent, MealPlanningHeroComponent],
+  imports: [MealCalendarComponent, MealPlanningHeroComponent, RouterLink],
   selector: 'app-meal-planning-page',
   styleUrl: './meal-planning-page.component.scss',
   templateUrl: './meal-planning-page.component.html',
@@ -83,5 +84,10 @@ export class MealPlanningPageComponent {
 
   protected mealStatus(plan: MealPlan, period: string): MealStatus {
     return plan[period as 'breakfast' | 'lunch' | 'dinner'].status;
+  }
+
+  protected recipeForMeal(plan: MealPlan, period: MealPeriod): Recipe | null {
+    const recipeId = plan[period].recipeId;
+    return this.workbook.data().recipes.find((recipe) => recipe.id === recipeId) ?? null;
   }
 }

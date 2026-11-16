@@ -9,9 +9,7 @@ const mergeDailyLogs = (
   importedLogs: DailyLog[],
   profileId: string,
 ): DailyLog[] => {
-  const logsByDate = new Map(
-    existingLogs.map((log) => [log.loggedOn, { ...log, profileId }]),
-  );
+  const logsByDate = new Map(existingLogs.map((log) => [log.loggedOn, { ...log, profileId }]));
 
   for (const importedLog of importedLogs) {
     const existingLog = logsByDate.get(importedLog.loggedOn);
@@ -187,6 +185,7 @@ export class WorkbookDataService {
       const accountData = {
         ...importedData,
         week: { ...importedData.week, profileId: userId },
+        recipes: importedData.recipes.map((recipe) => ({ ...recipe, profileId: userId })),
         mealPlans: mergeMealPlans(this.data().mealPlans, importedData.mealPlans),
         dailyLogs: mergeDailyLogs(this.data().dailyLogs, importedData.dailyLogs, userId),
       };
